@@ -19,3 +19,15 @@ Route::get('/admin/logboek', function () {
 Route::get('/admin/retouren', function () {
     return view('admin.retouren');
 })->name('admin.retouren');
+
+Route::get('/user', function () {
+    return view('user.home');
+})->name('user.home');
+
+Route::get('/user/lenen', function () {
+    return view('user.lenen');
+})->name('user.lenen');
+
+Route::get('/user/profiel', function () {
+    return view('user.profiel');
+})->name('user.profiel');
