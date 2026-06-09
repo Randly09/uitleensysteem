@@ -164,6 +164,117 @@ body.user-body {
     background: #41278d;
 }
 
+.lenen-page {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lenen-card {
+    background: #28106f;
+    border-radius: 7px;
+    box-shadow: 7px 7px 6px rgba(0, 0, 0, 0.35);
+}
+
+.menu-card {
+    width: 225px;
+    height: 225px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 36px;
+    padding: 26px;
+}
+
+.lenen-btn,
+.lenen-submit {
+    background: white;
+    border: none;
+    border-radius: 6px;
+    height: 36px;
+    font-size: 18px;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+.form-card {
+    width: 235px;
+    min-height: 440px;
+    padding: 18px 24px;
+    color: white;
+}
+
+.form-card label {
+    display: block;
+    font-size: 9px;
+    margin: 6px 0 7px;
+}
+
+.search-box,
+.date-box {
+    background: white;
+    height: 35px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+}
+
+.search-box input,
+.date-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.search-box span,
+.date-box span {
+    color: black;
+    font-size: 25px;
+}
+
+.items-box {
+    background: white;
+    color: black;
+    height: 163px;
+    margin: 16px 0;
+    border-radius: 6px;
+    padding: 24px 17px;
+}
+
+.items-box div {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #777;
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.items-box button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lenen-submit {
+    width: 100%;
+    height: 36px;
+    margin-top: 58px;
+    font-size: 22px;
+}
+
+.hidden {
+    display: none;
+}
+
 @media (max-width: 430px) {
     .user-phone {
         width: 100vw;
