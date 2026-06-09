@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
     <meta charset="UTF-8">
     <title>Student - Uitleensysteem</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="user-body">
     <div class="user-phone">
         <header class="user-header">
@@ -17,18 +19,22 @@
         </main>
 
         <footer class="user-footer">
-            <a href="{{ route('user.home') }}" class="footer-icon">
+            <a href="{{ route('user.home') }}"
+                class="footer-icon {{ request()->routeIs('user.home') ? 'active' : '' }}">
                 <img src="{{ asset('images/home-icon.png') }}" alt="Home">
             </a>
 
-            <a href="{{ route('user.lenen') }}" class="footer-icon active">
+            <a href="{{ route('user.lenen') }}"
+                class="footer-icon {{ request()->routeIs('user.lenen') ? 'active' : '' }}">
                 <img src="{{ asset('images/logboek-icon.png') }}" alt="Lenen">
             </a>
 
-            <a href="{{ route('user.profiel') }}" class="footer-icon">
+            <a href="{{ route('user.profiel') }}"
+                class="footer-icon {{ request()->routeIs('user.profiel') ? 'active' : '' }}">
                 <img src="{{ asset('images/profile-icon.png') }}" alt="Profiel">
             </a>
         </footer>
     </div>
 </body>
+
 </html>
