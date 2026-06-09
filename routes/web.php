@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\MateriaalController;
 
 Route::redirect('/', '/admin');
 
@@ -34,3 +35,9 @@ Route::get('/lenen/uitlenen', [UserController::class, 'uitlenen'])->name('user.l
 Route::get('/user/profiel', function () {
     return view('user.profiel');
 })->name('user.profiel');
+
+Route::get('/admin/materialen', [MateriaalController::class, 'index'])
+    ->name('admin.materialen');
+
+Route::post('/admin/materialen', [MateriaalController::class, 'store'])
+    ->name('admin.materialen.store');

@@ -1,0 +1,185 @@
+.materialen-page {
+    min-height: 100%;
+    padding: 25px 35px;
+    background: white;
+}
+
+.materialen-top {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 18px;
+}
+
+.add-material-btn {
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 28px;
+    font-weight: bold;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.material-form-card {
+    display: none;
+    border: 2px solid #28106f;
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 18px;
+    background: white;
+}
+
+.material-form-card.show {
+    display: block;
+}
+
+.search-box {
+    background: white;
+    border: 2px solid #28106f;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.search-box input {
+    flex: 1;
+    background: #e5e5e5;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    min-width: 0;
+    font-size: 16px;
+}
+
+.search-box button,
+.materialen-list button,
+.confirm-btn {
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.materialen-list {
+    background: white;
+    border: 2px solid #28106f;
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 420px;
+    overflow-x: auto;
+}
+
+.materialen-list table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.materialen-list th,
+.materialen-list td {
+    border-bottom: 2px solid #28106f;
+    padding: 14px 10px;
+}
+
+.materiaal-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.form-row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 18px;
+}
+
+.form-row div {
+    flex: 1;
+    min-width: 0;
+}
+
+.material-form-card label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.material-form-card input,
+.material-form-card textarea {
+    width: 100%;
+    background: #d9d9d9;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 14px;
+}
+
+.material-form-card textarea {
+    height: 90px;
+    resize: none;
+}
+
+.foto-input {
+    display: none;
+}
+
+.foto-upload-label {
+    width: 100%;
+    height: 44px;
+    background: #d9d9d9;
+    border-radius: 8px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    cursor: pointer;
+    font-weight: normal !important;
+    text-align: center;
+}
+
+.foto-preview-box {
+    display: none;
+    position: relative;
+    width: 120px;
+    height: 90px;
+    margin-top: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #28106f;
+}
+
+.foto-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-foto-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #28106f;
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+    font-weight: bold;
+}
+
+.confirm-btn {
+    display: block;
+    width: 320px;
+    max-width: 100%;
+    margin: 10px auto 0;
+    font-size: 18px;
+}

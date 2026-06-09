@@ -11,6 +11,10 @@
         'Noto Color Emoji';
 }
 
+@import './admin/layout.css';
+@import './admin/materialen.css';
+@import './user/layout.css';
+
 * {
     box-sizing: border-box;
 }

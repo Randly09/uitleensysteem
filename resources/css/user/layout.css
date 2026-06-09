@@ -1,0 +1,73 @@
+body.user-body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #1c1c1c;
+}
+
+.user-phone {
+    width: 393px;
+    min-height: 852px;
+    margin: 0 auto;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-header {
+    height: 75px;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.user-logo {
+    height: 40px;
+    width: auto;
+}
+
+.user-badge {
+    height: 58px;
+    width: auto;
+}
+
+.user-content {
+    flex: 1;
+    background: white;
+    padding: 20px;
+}
+
+.user-footer {
+    height: 70px;
+    background: #28106f;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.footer-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-icon img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.footer-icon.active {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 430px) {
+    .user-phone {
+        width: 100vw;
+        min-height: 100vh;
+    }
+}
