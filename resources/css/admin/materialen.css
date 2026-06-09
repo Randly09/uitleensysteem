@@ -7,6 +7,7 @@
 .materialen-top {
     display: flex;
     justify-content: flex-end;
+    gap: 15px;
     margin-bottom: 18px;
 }
 
@@ -14,6 +15,17 @@
     background: #28106f;
     color: white;
     border: none;
+    border-radius: 8px;
+    padding: 16px 28px;
+    font-weight: bold;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.add-set-btn {
+    background: white;
+    color: #28106f;
+    border: 2px solid #28106f;
     border-radius: 8px;
     padding: 16px 28px;
     font-weight: bold;
@@ -32,66 +44,6 @@
 
 .material-form-card.show {
     display: block;
-}
-
-.search-box {
-    background: white;
-    border: 2px solid #28106f;
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
-    gap: 14px;
-    margin-bottom: 18px;
-}
-
-.search-box input {
-    flex: 1;
-    background: #e5e5e5;
-    border: none;
-    border-radius: 8px;
-    padding: 14px;
-    min-width: 0;
-    font-size: 16px;
-}
-
-.search-box button,
-.materialen-list button,
-.confirm-btn {
-    background: #28106f;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 24px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.materialen-list {
-    background: white;
-    border: 2px solid #28106f;
-    border-radius: 10px;
-    padding: 20px;
-    min-height: 420px;
-    overflow-x: auto;
-}
-
-.materialen-list table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-}
-
-.materialen-list th,
-.materialen-list td {
-    border-bottom: 2px solid #28106f;
-    padding: 14px 10px;
-}
-
-.materiaal-img {
-    width: 45px;
-    height: 45px;
-    object-fit: cover;
-    border-radius: 6px;
 }
 
 .form-row {
@@ -125,6 +77,112 @@
     height: 90px;
     resize: none;
 }
+
+.confirm-btn {
+    display: block;
+    width: 320px;
+    max-width: 100%;
+    margin: 10px auto 0;
+    font-size: 18px;
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Search */
+
+.search-box {
+    background: white;
+    border: 2px solid #28106f;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    align-items: center;
+    width: 100%;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    height: 54px;
+    background: #e5e5e5;
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    font-size: 16px;
+}
+
+.search-box select {
+    width: 220px;
+    flex-shrink: 0;
+    height: 54px;
+    background: #e5e5e5;
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    font-size: 16px;
+}
+
+.search-box button {
+    width: 160px;
+    flex-shrink: 0;
+    height: 54px;
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* List */
+
+.materialen-list {
+    background: white;
+    border: 2px solid #28106f;
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 420px;
+    overflow-x: auto;
+}
+
+.materialen-list table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.materialen-list th,
+.materialen-list td {
+    border-bottom: 2px solid #28106f;
+    padding: 14px 10px;
+}
+
+.materialen-list button {
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.materiaal-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+/* Image upload */
 
 .foto-input {
     display: none;
@@ -176,53 +234,73 @@
     font-weight: bold;
 }
 
-.confirm-btn {
-    display: block;
-    width: 320px;
-    max-width: 100%;
-    margin: 10px auto 0;
-    font-size: 18px;
-}
-
-.materialen-top {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-bottom: 18px;
-}
-
-.add-set-btn {
-    background: white;
-    color: #28106f;
-    border: 2px solid #28106f;
-    border-radius: 8px;
-    padding: 16px 28px;
-    font-weight: bold;
-    font-size: 17px;
-    cursor: pointer;
-}
-
-.search-box select {
-    background: #e5e5e5;
-    border: none;
-    border-radius: 8px;
-    padding: 0 14px;
-    font-size: 16px;
-}
+/* Set form */
 
 .set-material-list {
-    background: #d9d9d9;
-    border-radius: 8px;
-    padding: 14px;
+    background: #eeeeee;
+    border-radius: 10px;
+    padding: 15px;
     margin-bottom: 18px;
-    max-height: 150px;
+    max-height: 230px;
     overflow-y: auto;
 }
 
 .set-material-item {
+    background: white;
+    border: 1px solid #d5d5d5;
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
     display: flex !important;
-    gap: 10px;
+    justify-content: space-between;
     align-items: center;
-    font-weight: normal !important;
-    margin-bottom: 8px;
+    gap: 20px;
+}
+
+.set-material-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.set-material-info span {
+    display: flex;
+    flex-direction: column;
+}
+
+.set-material-info small {
+    color: #555;
+    margin-top: 3px;
+}
+
+.set-material-item label {
+    margin-bottom: 0;
+}
+
+.set-amount-input {
+    width: 90px !important;
+    margin-bottom: 0 !important;
+    text-align: center;
+}
+
+.set-amount-input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .search-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box select,
+    .search-box button {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

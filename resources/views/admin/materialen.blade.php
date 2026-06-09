@@ -4,13 +4,8 @@
 <div class="materialen-page">
 
     <div class="materialen-top">
-        <button class="add-material-btn" onclick="showMaterialForm()">
-            + Materiaal toevoegen
-        </button>
-
-        <button class="add-set-btn" onclick="showSetForm()">
-            + Set toevoegen
-        </button>
+        <button class="add-material-btn" onclick="showMaterialForm()">+ Materiaal toevoegen</button>
+        <button class="add-set-btn" onclick="showSetForm()">+ Set toevoegen</button>
     </div>
 
     <div id="materialForm" class="material-form-card">
@@ -26,7 +21,7 @@
 
                 <div>
                     <label>Hoeveelheid</label>
-                    <input type="number" name="hoeveelheid" required>
+                    <input type="number" name="hoeveelheid" min="0" required>
                 </div>
 
                 <div>
@@ -42,28 +37,9 @@
                 </div>
 
                 <div>
-                    <label>Aantal met andere conditie</label>
-                    <input type="number" name="split_aantal" placeholder="Bijv. 2">
-                </div>
-
-                <div>
-                    <label>Nieuwe conditie</label>
-                    <input type="text" name="split_conditie" placeholder="Bijv. Slecht">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div>
                     <label>Foto</label>
 
-                    <input
-                        id="fotoInput"
-                        class="foto-input"
-                        type="file"
-                        name="foto"
-                        accept="image/*"
-                        onchange="previewFoto(event)"
-                    >
+                    <input id="fotoInput" class="foto-input" type="file" name="foto" accept="image/*" onchange="previewFoto(event)">
 
                     <label id="fotoUploadLabel" for="fotoInput" class="foto-upload-label">
                         Bestand kiezen
@@ -84,18 +60,23 @@
     </div>
 
     <div id="setForm" class="material-form-card">
-        <form action="#" method="POST">
+        <form action="{{ route('admin.sets.store') }}" method="POST">
             @csrf
 
             <div class="form-row">
                 <div>
                     <label>Naam set</label>
-                    <input type="text" name="set_naam" placeholder="Bijv. Podcast set">
+                    <input type="text" name="set_naam" placeholder="Bijv. Podcast set" required>
+                </div>
+
+                <div>
+                    <label>Hoeveelheid sets</label>
+                    <input type="number" name="hoeveelheid" value="1" min="1" required>
                 </div>
 
                 <div>
                     <label>Zoek materiaal</label>
-                    <input type="text" placeholder="Zoeken naar materiaal">
+                    <input type="text" id="setSearchInput" placeholder="Zoeken naar materiaal" onkeyup="filterSetMaterialen()">
                 </div>
             </div>
 
@@ -103,10 +84,32 @@
 
             <div class="set-material-list">
                 @foreach($materialen as $materiaal)
-                    <label class="set-material-item">
-                        <input type="checkbox" name="materialen[]" value="{{ $materiaal->id }}">
-                        <span>{{ $materiaal->naam }} - beschikbaar: {{ $materiaal->beschikbaarheid }}</span>
-                    </label>
+                    <div class="set-material-item" data-name="{{ strtolower($materiaal->naam) }}">
+                        <div class="set-material-info">
+                            <input
+                                type="checkbox"
+                                name="materialen[{{ $loop->index }}][id]"
+                                value="{{ $materiaal->id }}"
+                                onchange="toggleSetAmount(this)"
+                                @if($materiaal->beschikbaarheid < 1) disabled @endif
+                            >
+
+                            <span>
+                                <strong>{{ $materiaal->naam }}</strong>
+                                <small>Beschikbaar: {{ $materiaal->beschikbaarheid }}</small>
+                            </span>
+                        </div>
+
+                        <input
+                            class="set-amount-input"
+                            type="number"
+                            name="materialen[{{ $loop->index }}][aantal]"
+                            value="1"
+                            min="1"
+                            max="{{ max(1, $materiaal->beschikbaarheid) }}"
+                            disabled
+                        >
+                    </div>
                 @endforeach
             </div>
 
@@ -117,61 +120,83 @@
         </form>
     </div>
 
-    <div class="materialen-center">
+    <form class="search-box" onsubmit="filterMaterialen(event)">
+        <input id="materiaalSearchInput" type="text" placeholder="Zoeken">
 
-        <form class="search-box">
-            <input type="text" placeholder="Zoeken">
-            <select>
-                <option>Filter op materiaal</option>
-                <option>Filter op set</option>
-            </select>
-            <button type="button">Zoeken</button>
-        </form>
+        <select id="materiaalTypeFilter">
+            <option value="all">Alles</option>
+            <option value="materiaal">Materiaal</option>
+            <option value="set">Set</option>
+        </select>
 
-        <div class="materialen-list">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Foto</th>
-                        <th>Naam</th>
-                        <th>Hoeveelheid</th>
-                        <th>Beschikbaarheid</th>
-                        <th>Conditie</th>
-                        <th>Acties</th>
+        <button type="submit">Zoeken</button>
+    </form>
+
+    <div class="materialen-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Foto</th>
+                    <th>Naam</th>
+                    <th>Hoeveelheid</th>
+                    <th>Beschikbaarheid</th>
+                    <th>Conditie / Inhoud</th>
+                    <th>Type</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach($materialen as $materiaal)
+                    <tr class="materiaal-row" data-type="materiaal" data-name="{{ strtolower($materiaal->naam) }}">
+                        <td>
+                            @if($materiaal->foto_path)
+                                <img src="{{ asset($materiaal->foto_path) }}" class="materiaal-img">
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td>{{ $materiaal->naam }}</td>
+                        <td>{{ $materiaal->hoeveelheid }}</td>
+                        <td>{{ $materiaal->beschikbaarheid }}</td>
+                        <td>{{ $materiaal->conditie }}</td>
+                        <td>Materiaal</td>
+                        <td>
+                            <button
+                                type="button"
+                                onclick="editMateriaal(this)"
+                                data-id="{{ $materiaal->id }}"
+                                data-naam="{{ $materiaal->naam }}"
+                                data-hoeveelheid="{{ $materiaal->hoeveelheid }}"
+                                data-lokaal="{{ $materiaal->lokaal }}"
+                                data-conditie="{{ $materiaal->conditie }}"
+                                data-opmerkingen="{{ $materiaal->opmerkingen }}"
+                            >
+                                Bekijken
+                            </button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach($materialen as $materiaal)
-                        <tr>
-                            <td>
-                                @if($materiaal->foto_path)
-                                    <img src="{{ asset($materiaal->foto_path) }}" class="materiaal-img">
-                                @endif
-                            </td>
-                            <td>{{ $materiaal->naam }}</td>
-                            <td>{{ $materiaal->hoeveelheid }}</td>
-                            <td>{{ $materiaal->beschikbaarheid }}</td>
-                            <td>{{ $materiaal->conditie }}</td>
-                            <td>
-                                <button
-                                    type="button"
-                                    onclick="editMateriaal(this)"
-                                    data-id="{{ $materiaal->id }}"
-                                    data-naam="{{ $materiaal->naam }}"
-                                    data-hoeveelheid="{{ $materiaal->hoeveelheid }}"
-                                    data-lokaal="{{ $materiaal->lokaal }}"
-                                    data-conditie="{{ $materiaal->conditie }}"
-                                    data-opmerkingen="{{ $materiaal->opmerkingen }}"
-                                >
-                                    Bekijken
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                @endforeach
 
+                @foreach($sets as $set)
+                    <tr class="materiaal-row" data-type="set" data-name="{{ strtolower($set->naam) }}">
+                        <td>-</td>
+                        <td>{{ $set->naam }}</td>
+                        <td>{{ $set->hoeveelheid }}</td>
+                        <td>{{ $set->hoeveelheid }}</td>
+                        <td>
+                            @foreach($set->materialen as $materiaal)
+                                {{ $materiaal->naam }} x{{ $materiaal->pivot->aantal }}<br>
+                            @endforeach
+                        </td>
+                        <td>Set</td>
+                        <td>
+                            <button type="button">Bekijken</button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -184,6 +209,7 @@
     function showMaterialForm() {
         document.getElementById('materialForm').classList.toggle('show');
         document.getElementById('setForm').classList.remove('show');
+        resetMateriaalForm();
     }
 
     function showSetForm() {
@@ -193,7 +219,6 @@
 
     function previewFoto(event) {
         const file = event.target.files[0];
-
         if (!file) return;
 
         fotoPreview.src = URL.createObjectURL(file);
@@ -227,10 +252,60 @@
         form.querySelector('[name="lokaal"]').value = button.dataset.lokaal;
         form.querySelector('[name="conditie"]').value = button.dataset.conditie;
         form.querySelector('[name="opmerkingen"]').value = button.dataset.opmerkingen;
-        form.querySelector('[name="split_aantal"]').value = '';
-        form.querySelector('[name="split_conditie"]').value = '';
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetMateriaalForm() {
+        const form = document.getElementById('materiaalForm');
+        const methodField = document.getElementById('methodField');
+
+        form.action = "{{ route('admin.materialen.store') }}";
+        methodField.innerHTML = '';
+        form.reset();
+        removeFoto();
+    }
+
+    function toggleSetAmount(checkbox) {
+        const item = checkbox.closest('.set-material-item');
+        const amountInput = item.querySelector('.set-amount-input');
+
+        if (checkbox.checked) {
+            amountInput.disabled = false;
+            amountInput.required = true;
+        } else {
+            amountInput.disabled = true;
+            amountInput.required = false;
+            amountInput.value = 1;
+        }
+    }
+
+    function filterSetMaterialen() {
+        const searchValue = document.getElementById('setSearchInput').value.toLowerCase();
+        const items = document.querySelectorAll('.set-material-item');
+
+        items.forEach(item => {
+            const name = item.dataset.name;
+            item.style.display = name.includes(searchValue) ? 'flex' : 'none';
+        });
+    }
+
+    function filterMaterialen(event) {
+        event.preventDefault();
+
+        const searchValue = document.getElementById('materiaalSearchInput').value.toLowerCase().trim();
+        const typeValue = document.getElementById('materiaalTypeFilter').value;
+        const rows = document.querySelectorAll('.materiaal-row');
+
+        rows.forEach(row => {
+            const name = row.dataset.name;
+            const type = row.dataset.type;
+
+            const matchesSearch = searchValue === '' || name.includes(searchValue);
+            const matchesType = typeValue === 'all' || type === typeValue;
+
+            row.style.display = matchesSearch && matchesType ? '' : 'none';
+        });
     }
 </script>
 @endsection

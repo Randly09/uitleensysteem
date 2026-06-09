@@ -15,4 +15,12 @@ class Materiaal extends Model
         'opmerkingen',
         'foto_path',
     ];
+
+public function sets()
+{
+    return $this->belongsToMany(MateriaalSet::class, 'materiaal_materiaal_set')
+        ->withPivot('aantal')
+        ->withTimestamps();
+}
+
 }
