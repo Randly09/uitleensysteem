@@ -38,3 +38,6 @@ Route::get('/admin/materialen', [MateriaalController::class, 'index'])
 
 Route::post('/admin/materialen', [MateriaalController::class, 'store'])
     ->name('admin.materialen.store');
+
+    Route::put('/admin/materialen/{materiaal}', [MateriaalController::class, 'update'])
+    ->name('admin.materialen.update');
