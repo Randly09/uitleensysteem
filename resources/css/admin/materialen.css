@@ -1,44 +1,47 @@
 .materialen-page {
-    background: #28106f;
-    height: 100%;
-    border-radius: 8px;
-    padding: 25px;
-    position: relative;
-    overflow: hidden;
+    min-height: 100%;
+    padding: 25px 35px;
+    background: white;
+}
+
+.materialen-top {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 18px;
 }
 
 .add-material-btn {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    background: white;
-    color: #28106f;
+    background: #28106f;
+    color: white;
     border: none;
-    border-radius: 6px;
-    padding: 12px 22px;
+    border-radius: 8px;
+    padding: 16px 28px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 17px;
     cursor: pointer;
 }
 
-.materialen-center {
-    width: 70%;
-    max-width: 950px;
-    height: 100%;
-    margin: 0 auto;
-    padding-top: 45px;
-    display: flex;
-    flex-direction: column;
+.material-form-card {
+    display: none;
+    border: 2px solid #28106f;
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 18px;
+    background: white;
+}
+
+.material-form-card.show {
+    display: block;
 }
 
 .search-box {
     background: white;
+    border: 2px solid #28106f;
     border-radius: 10px;
     padding: 15px;
     display: flex;
     gap: 14px;
-    margin-bottom: 16px;
-    flex-shrink: 0;
+    margin-bottom: 18px;
 }
 
 .search-box input {
@@ -48,6 +51,7 @@
     border-radius: 8px;
     padding: 14px;
     min-width: 0;
+    font-size: 16px;
 }
 
 .search-box button,
@@ -56,18 +60,19 @@
     background: #28106f;
     color: white;
     border: none;
-    border-radius: 4px;
-    padding: 10px 22px;
+    border-radius: 6px;
+    padding: 10px 24px;
     font-weight: bold;
     cursor: pointer;
 }
 
 .materialen-list {
     background: white;
-    border-radius: 8px;
+    border: 2px solid #28106f;
+    border-radius: 10px;
     padding: 20px;
-    flex: 1;
-    overflow-y: auto;
+    min-height: 420px;
+    overflow-x: auto;
 }
 
 .materialen-list table {
@@ -79,7 +84,7 @@
 .materialen-list th,
 .materialen-list td {
     border-bottom: 2px solid #28106f;
-    padding: 10px;
+    padding: 14px 10px;
 }
 
 .materiaal-img {
@@ -89,49 +94,10 @@
     border-radius: 6px;
 }
 
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-}
-
-.modal-overlay.show {
-    display: flex;
-}
-
-.modal-card {
-    background: white;
-    width: 650px;
-    max-height: 90vh;
-    overflow-y: auto;
-    border-radius: 10px;
-    padding: 30px;
-    position: relative;
-}
-
-.modal-card h2 {
-    margin-top: 0;
-    color: #28106f;
-}
-
-.modal-close {
-    position: absolute;
-    top: 12px;
-    right: 18px;
-    background: none;
-    border: none;
-    font-size: 32px;
-    cursor: pointer;
-}
-
 .form-row {
     display: flex;
     gap: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .form-row div {
@@ -139,31 +105,81 @@
     min-width: 0;
 }
 
-.modal-card label {
+.material-form-card label {
     display: block;
     font-weight: bold;
     margin-bottom: 6px;
 }
 
-.modal-card input,
-.modal-card textarea {
+.material-form-card input,
+.material-form-card textarea {
     width: 100%;
     background: #d9d9d9;
     border: none;
     border-radius: 8px;
     padding: 12px;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
 }
 
-.modal-card textarea {
-    height: 120px;
+.material-form-card textarea {
+    height: 90px;
     resize: none;
+}
+
+.foto-input {
+    display: none;
+}
+
+.foto-upload-label {
+    width: 100%;
+    height: 44px;
+    background: #d9d9d9;
+    border-radius: 8px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    cursor: pointer;
+    font-weight: normal !important;
+    text-align: center;
+}
+
+.foto-preview-box {
+    display: none;
+    position: relative;
+    width: 120px;
+    height: 90px;
+    margin-top: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #28106f;
+}
+
+.foto-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-foto-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #28106f;
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+    font-weight: bold;
 }
 
 .confirm-btn {
     display: block;
     width: 320px;
     max-width: 100%;
-    margin: 20px auto 0;
+    margin: 10px auto 0;
     font-size: 18px;
 }
