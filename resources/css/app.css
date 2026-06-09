@@ -18,3 +18,270 @@
 * {
     box-sizing: border-box;
 }
+
+body.admin-body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #1c1c1c;
+}
+
+.admin-page {
+    width: 100vw;
+    height: 100vh;
+    margin: 0 auto;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-header {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-bottom: 2px solid #28106f;
+    position: relative;
+}
+
+.header-left {
+    position: absolute;
+    left: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.header-left img {
+    height: 65px;
+    width: auto;
+}
+
+.header-right {
+    position: absolute;
+    right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.header-right img {
+    height: 70px;
+    width: auto;
+}
+
+.admin-nav {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.admin-nav a {
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 0 30px;
+    border-right: 2px solid #28106f;
+}
+
+.admin-nav a:first-child {
+    border-left: 2px solid #28106f;
+}
+
+.admin-nav a:hover {
+    text-decoration: underline;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 30px;
+    background: white;
+}
+
+.admin-footer {
+    height: 80px;
+    background: #28106f;
+}
+
+body.user-body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #1c1c1c;
+}
+
+.user-phone {
+    width: 393px;
+    min-height: 852px;
+    margin: 0 auto;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-header {
+    height: 75px;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.user-logo {
+    height: 40px;
+    width: auto;
+}
+
+.user-badge {
+    height: 58px;
+    width: auto;
+}
+
+.user-content {
+    flex: 1;
+    background: white;
+    padding: 20px;
+}
+
+.user-footer {
+    height: 70px;
+    background: #28106f;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.footer-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-icon img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.footer-icon.active {
+    background: #41278d;
+}
+
+.lenen-page {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lenen-card {
+    background: #28106f;
+    border-radius: 7px;
+    box-shadow: 7px 7px 6px rgba(0, 0, 0, 0.35);
+}
+
+.menu-card {
+    width: 225px;
+    height: 225px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 36px;
+    padding: 26px;
+}
+
+.lenen-btn,
+.lenen-submit {
+    background: white;
+    border: none;
+    border-radius: 6px;
+    height: 36px;
+    font-size: 18px;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+.form-card {
+    width: 235px;
+    min-height: 440px;
+    padding: 18px 24px;
+    color: white;
+}
+
+.form-card label {
+    display: block;
+    font-size: 9px;
+    margin: 6px 0 7px;
+}
+
+.search-box,
+.date-box {
+    background: white;
+    height: 35px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+}
+
+.search-box input,
+.date-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.search-box span,
+.date-box span {
+    color: black;
+    font-size: 25px;
+}
+
+.items-box {
+    background: white;
+    color: black;
+    height: 163px;
+    margin: 16px 0;
+    border-radius: 6px;
+    padding: 24px 17px;
+}
+
+.items-box div {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #777;
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.items-box button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lenen-submit {
+    width: 100%;
+    height: 36px;
+    margin-top: 58px;
+    font-size: 22px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 430px) {
+    .user-phone {
+        width: 100vw;
+        min-height: 100vh;
+    }
+}
