@@ -1,0 +1,169 @@
+.materialen-page {
+    background: #28106f;
+    height: 100%;
+    border-radius: 8px;
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+.add-material-btn {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: white;
+    color: #28106f;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 22px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.materialen-center {
+    width: 70%;
+    max-width: 950px;
+    height: 100%;
+    margin: 0 auto;
+    padding-top: 45px;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-box {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.search-box input {
+    flex: 1;
+    background: #e5e5e5;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    min-width: 0;
+}
+
+.search-box button,
+.materialen-list button,
+.confirm-btn {
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 22px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.materialen-list {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.materialen-list table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.materialen-list th,
+.materialen-list td {
+    border-bottom: 2px solid #28106f;
+    padding: 10px;
+}
+
+.materiaal-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-card {
+    background: white;
+    width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+}
+
+.modal-card h2 {
+    margin-top: 0;
+    color: #28106f;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.form-row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.form-row div {
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-card label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.modal-card input,
+.modal-card textarea {
+    width: 100%;
+    background: #d9d9d9;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 18px;
+}
+
+.modal-card textarea {
+    height: 120px;
+    resize: none;
+}
+
+.confirm-btn {
+    display: block;
+    width: 320px;
+    max-width: 100%;
+    margin: 20px auto 0;
+    font-size: 18px;
+}
