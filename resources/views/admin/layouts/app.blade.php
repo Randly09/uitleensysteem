@@ -14,9 +14,9 @@
     </div>
 
     <nav class="admin-nav">
+                <a href="{{ route('admin.home') }}">Home</a>
         <a href="{{ route('admin.materialen') }}">Materialen</a>
         <a href="{{ route('admin.logboek') }}">Logboek</a>
-        <a href="{{ route('admin.home') }}">Home</a>
         <a href="{{ route('admin.retouren') }}">Retours</a>
     </nav>
 
