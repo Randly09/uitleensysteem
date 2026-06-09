@@ -76,7 +76,8 @@ body.admin-body {
     flex: 1;
     padding: 25px;
     background: white;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .admin-footer {
