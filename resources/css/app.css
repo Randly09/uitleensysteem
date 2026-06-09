@@ -161,7 +161,7 @@ body.user-body {
 }
 
 .footer-icon.active {
-    background: rgba(255, 255, 255, 0.25);
+    background: #41278d;
 }
 
 @media (max-width: 430px) {
