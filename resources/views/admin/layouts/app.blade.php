@@ -5,24 +5,28 @@
     <title>Admin - Uitleensysteem</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <header>
-        <div class="logo">SUMMA</div>
+<body class="admin-body">
+    <div class="admin-page">
+        <header class="admin-header">
+            <div class="logo">SUMMA</div>
 
-        <nav>
-            <a href="{{ route('admin.materialen') }}">Materialen</a>
-            <a href="{{ route('admin.logboek') }}">Logboek</a>
-            <a href="{{ route('admin.home') }}">Home</a>
-            <a href="{{ route('admin.retouren') }}">Retours</a>
-        </nav>
+            <nav class="admin-nav">
+                <a href="{{ route('admin.materialen') }}">Materialen</a>
+                <a href="{{ route('admin.logboek') }}">Logboek</a>
+                <a href="{{ route('admin.home') }}">Home</a>
+                <a href="{{ route('admin.retouren') }}">Retours</a>
+            </nav>
 
-        <div class="badge">samen<br>kun je<br>meer</div>
-    </header>
+            <div class="summa-badge">
+                samen<br>kun je<br>meer
+            </div>
+        </header>
 
-    <main>
-        @yield('content')
-    </main>
+        <main class="admin-content">
+            @yield('content')
+        </main>
 
-    <footer></footer>
+        <footer class="admin-footer"></footer>
+    </div>
 </body>
 </html>

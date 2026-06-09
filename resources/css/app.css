@@ -9,3 +9,87 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+* {
+    box-sizing: border-box;
+}
+
+body.admin-body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #1c1c1c;
+}
+
+.admin-page {
+    width: 1440px;
+    height: 1024px;
+    margin: 0 auto;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-header {
+    height: 55px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    background: white;
+    border-bottom: 2px solid #28106f;
+}
+
+.logo {
+    color: #28106f;
+    font-weight: 700;
+    font-size: 24px;
+    margin-right: auto;
+}
+
+.admin-nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.admin-nav a {
+    color: black;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 0 14px;
+    border-right: 2px solid #28106f;
+}
+
+.admin-nav a:first-child {
+    border-left: 2px solid #28106f;
+}
+
+.admin-nav a:hover {
+    text-decoration: underline;
+}
+
+.summa-badge {
+    width: 48px;
+    height: 48px;
+    margin-left: 24px;
+    background: #28106f;
+    color: white;
+    font-size: 9px;
+    line-height: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 30px;
+    background: white;
+}
+
+.admin-footer {
+    height: 80px;
+    background: #28106f;
+}
