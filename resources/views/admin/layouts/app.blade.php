@@ -7,20 +7,24 @@
 </head>
 <body class="admin-body">
     <div class="admin-page">
-        <header class="admin-header">
-            <div class="logo">SUMMA</div>
+<header class="admin-header">
 
-            <nav class="admin-nav">
-                <a href="{{ route('admin.materialen') }}">Materialen</a>
-                <a href="{{ route('admin.logboek') }}">Logboek</a>
-                <a href="{{ route('admin.home') }}">Home</a>
-                <a href="{{ route('admin.retouren') }}">Retours</a>
-            </nav>
+    <div class="header-left">
+        <img src="{{ asset('images/summa-logo.png') }}" alt="SUMMA">
+    </div>
 
-            <div class="summa-badge">
-                samen<br>kun je<br>meer
-            </div>
-        </header>
+    <nav class="admin-nav">
+        <a href="{{ route('admin.materialen') }}">Materialen</a>
+        <a href="{{ route('admin.logboek') }}">Logboek</a>
+        <a href="{{ route('admin.home') }}">Home</a>
+        <a href="{{ route('admin.retouren') }}">Retours</a>
+    </nav>
+
+    <div class="header-right">
+        <img src="{{ asset('images/samen-kun-je-meer.png') }}" alt="Samen kun je meer">
+    </div>
+
+</header>
 
         <main class="admin-content">
             @yield('content')
