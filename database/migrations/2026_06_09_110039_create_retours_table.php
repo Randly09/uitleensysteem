@@ -16,20 +16,20 @@ return new class extends Migration
             $table->date('retour_datum');
             $table->timestamps();
         });
-        Schema::create("retours_users",function (Blueprint $table) {
+        Schema::create("retours_users", function (Blueprint $table) {
             $table->id();
             $table->integer('retours_id');
             $table->integer('users_id');
             $table->timestamps();
         });
-        Schema::create("user",function (Blueprint $table) {
+        Schema::create("user", function (Blueprint $table) {
             $table->id();
             $table->string("name");
             $table->string("Psnummer")->unique();            
             $table->timestamps();
 
         });
-                Schema::create('materiaals', function (Blueprint $table) {
+        Schema::create('materiaals', function (Blueprint $table) {
             $table->id();
             $table->string('naam');
             $table->integer('hoeveelheid');
@@ -47,6 +47,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('materiaals');
+        Schema::dropIfExists('user');
+        Schema::dropIfExists('retours_users');
         Schema::dropIfExists('retours');
     }
 };

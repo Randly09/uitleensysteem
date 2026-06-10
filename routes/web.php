@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MateriaalController;
+use App\Http\Controllers\Admin\MateriaalSetController;
 
 Route::redirect('/', '/admin');
 
@@ -9,9 +10,6 @@ Route::get('/admin', function () {
     return view('admin.home');
 })->name('admin.home');
 
-Route::get('/admin/materialen', function () {
-    return view('admin.materialen');
-})->name('admin.materialen');
 
 Route::get('/admin/logboek', function () {
     return view('admin.logboek');
@@ -28,9 +26,7 @@ Route::get('/user', function () {
 Route::get('/user/lenen', function () {
     return view('user.lenen');
 })->name('user.lenen');
-Route::get('/lenen', [UserController::class, 'lenen'])->name('user.lenen');
-Route::get('/lenen/geleend', [UserController::class, 'geleend'])->name('user.lenen.geleend');
-Route::get('/lenen/uitlenen', [UserController::class, 'uitlenen'])->name('user.lenen.uitlenen');
+
 
 Route::get('/user/profiel', function () {
     return view('user.profiel');
@@ -44,3 +40,6 @@ Route::post('/admin/materialen', [MateriaalController::class, 'store'])
 
     Route::put('/admin/materialen/{materiaal}', [MateriaalController::class, 'update'])
     ->name('admin.materialen.update');
+
+Route::post('/admin/sets', [MateriaalSetController::class, 'store'])
+    ->name('admin.sets.store');
