@@ -13,8 +13,8 @@ public function up(): void
 {
     Schema::create('materiaal_materiaal_set', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('materiaal_id')->constrained()->cascadeOnDelete();
-        $table->foreignId('materiaal_set_id')->constrained()->cascadeOnDelete();
+        $table->integer('materiaal_id')->constrained();
+        $table->integer('materiaal_set_id')->constrained();
         $table->integer('aantal')->default(1);
         $table->timestamps();
     });

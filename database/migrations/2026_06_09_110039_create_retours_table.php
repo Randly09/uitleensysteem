@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('retours', function (Blueprint $table) {
             $table->id();
-            $table->integer('materiaals_id');
-            $table->integer('users_id');
             $table->date('retour_datum');
             $table->timestamps();
         });
@@ -27,8 +25,9 @@ return new class extends Migration
         Schema::create("user",function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("Psnummer")->unique();
+            $table->string("Psnummer")->unique();            
             $table->timestamps();
+
         });
                 Schema::create('materiaals', function (Blueprint $table) {
             $table->id();
