@@ -97,7 +97,10 @@ class DatabaseSeeder extends Seeder
 
         for($i = 0; $i < 5; $i++) {
             \DB::table("retours")->insert([
+                "materiaal_id" => $i+1,
+                "aantal" => rand(1, 100),
                 "retour_datum" => now()->addDays(rand(1, 30)),
+                "is_returned" => rand(0, 1) == 1,
                 "created_at" => now(),
                 "updated_at" => now(),
             ]);

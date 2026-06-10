@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MateriaalController;
 use App\Http\Controllers\Admin\MateriaalSetController;
+use App\Http\Controllers\Admin\RetourController;
 
 Route::redirect('/', '/admin');
 
@@ -15,9 +16,9 @@ Route::get('/admin/logboek', function () {
     return view('admin.logboek');
 })->name('admin.logboek');
 
-Route::get('/admin/retouren', function () {
-    return view('admin.retouren');
-})->name('admin.retouren');
+
+Route::get('/admin/retouren', [RetourController::class, 'index'])
+    ->name('admin.retouren');
 
 Route::get('/user', function () {
     return view('user.home');

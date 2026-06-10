@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('retours', function (Blueprint $table) {
             $table->id();
+            $table->integer('materiaal_id');
+            $table->integer('aantal');
             $table->date('retour_datum');
+            $table->boolean('is_returned')->default(false);
             $table->timestamps();
         });
         Schema::create("retours_users", function (Blueprint $table) {
