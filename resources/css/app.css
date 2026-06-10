@@ -384,6 +384,74 @@ body.user-body {
     display: none !important;
 }
 
+.profiel-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.profiel-card {
+    width: 280px;
+    background: #28106f;
+    color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 7px 7px 6px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+.profiel-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: white;
+    color: #28106f;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.profiel-naam {
+    margin: 0 0 25px;
+    font-size: 22px;
+}
+
+.profiel-info {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.info-row {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.info-row span {
+    display: block;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.info-row strong {
+    font-size: 15px;
+}
+
+.profiel-btn {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 6px;
+    background: white;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+}
+
 @media (max-width: 430px) {
     .user-phone {
         width: 100vw;
