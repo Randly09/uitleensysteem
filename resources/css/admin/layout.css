@@ -13,6 +13,7 @@ body.admin-body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
 }
 
 .admin-header {
@@ -80,8 +81,22 @@ body.admin-body {
     overflow-x: hidden;
 }
 
+/* Footer hidden until bottom */
 .admin-footer {
     height: 70px;
-    flex-shrink: 0;
     background: #28106f;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.admin-footer.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
 }
