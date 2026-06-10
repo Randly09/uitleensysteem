@@ -71,3 +71,50 @@ body.user-body {
         min-height: 100vh;
     }
 }
+
+.user-home-page {
+    min-height: 100%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-home-card {
+    width: 100%;
+    border: 2px solid #28106f;
+    border-radius: 12px;
+    padding: 28px 22px;
+    text-align: center;
+    background: white;
+}
+
+.user-home-card h1 {
+    color: #28106f;
+    font-size: 26px;
+    margin: 0 0 18px;
+}
+
+.user-home-card p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: black;
+    margin: 0 0 16px;
+}
+
+.go-admin-btn {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    background: #28106f;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 15px 18px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.go-admin-btn:hover {
+    text-decoration: underline;
+}
