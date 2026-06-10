@@ -15,6 +15,7 @@ class Logboek extends Model
         'inleverdatum',
         'hoeveelheid',
         'conditie',
+        'opmerking',
         'terug',
     ];
 }

@@ -15,6 +15,11 @@
 @import './admin/materialen.css';
 @import './user/layout.css';
 @import './component/component.css';
+@import './admin/retouren.css';
+@import './admin/home.css';
+@import './admin/logboek.css';
+
+
 * {
     box-sizing: border-box;
 }

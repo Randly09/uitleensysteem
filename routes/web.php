@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MateriaalController;
 use App\Http\Controllers\Admin\MateriaalSetController;
+use App\Http\Controllers\Admin\LogboekController;
 use App\Http\Controllers\Admin\RetourController;
 
 Route::redirect('/', '/admin');
@@ -11,6 +12,23 @@ Route::get('/admin', function () {
     return view('admin.home');
 })->name('admin.home');
 
+/*
+|--------------------------------------------------------------------------
+| Admin routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/materialen', [MateriaalController::class, 'index'])
+    ->name('admin.materialen');
+
+Route::post('/admin/materialen', [MateriaalController::class, 'store'])
+    ->name('admin.materialen.store');
+
+Route::put('/admin/materialen/{materiaal}', [MateriaalController::class, 'update'])
+    ->name('admin.materialen.update');
+
+Route::post('/admin/sets', [MateriaalSetController::class, 'store'])
+    ->name('admin.sets.store');
 
 Route::get('/admin/logboek', [LogboekController::class, 'index'])
     ->name('admin.logboek');
@@ -18,9 +36,17 @@ Route::get('/admin/logboek', [LogboekController::class, 'index'])
 Route::patch('/admin/logboek/{logboek}/terug', [LogboekController::class, 'toggleTerug'])
     ->name('admin.logboek.terug');
 
-
 Route::get('/admin/retouren', [RetourController::class, 'index'])
     ->name('admin.retouren');
+
+    Route::post('/admin/retouren/verwerken', [RetourController::class, 'process'])
+    ->name('admin.retouren.process');
+
+/*
+|--------------------------------------------------------------------------
+| User routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/user', function () {
     return view('user.home');
@@ -30,19 +56,6 @@ Route::get('/user/lenen', function () {
     return view('user.lenen');
 })->name('user.lenen');
 
-
 Route::get('/user/profiel', function () {
     return view('user.profiel');
 })->name('user.profiel');
-
-Route::get('/admin/materialen', [MateriaalController::class, 'index'])
-    ->name('admin.materialen');
-
-Route::post('/admin/materialen', [MateriaalController::class, 'store'])
-    ->name('admin.materialen.store');
-
-    Route::put('/admin/materialen/{materiaal}', [MateriaalController::class, 'update'])
-    ->name('admin.materialen.update');
-
-Route::post('/admin/sets', [MateriaalSetController::class, 'store'])
-    ->name('admin.sets.store');

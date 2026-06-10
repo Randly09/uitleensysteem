@@ -10,6 +10,16 @@ class Users extends Model
 
     protected $fillable = [
         'name',
-        "psnummer",
+        'Psnummer',
     ];
+
+    public function retours()
+    {
+        return $this->belongsToMany(
+            Retour::class,
+            'retours_users',
+            'users_id',
+            'retours_id'
+        )->withTimestamps();
+    }
 }

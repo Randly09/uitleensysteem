@@ -100,3 +100,9 @@ body.admin-body {
     opacity: 1;
     pointer-events: auto;
 }
+
+.admin-nav a.active {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+}

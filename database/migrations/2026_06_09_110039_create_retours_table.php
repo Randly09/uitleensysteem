@@ -6,32 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('retours', function (Blueprint $table) {
-            $table->id();
-            $table->integer('materiaal_id');
-            $table->integer('aantal');
-            $table->date('retour_datum');
-            $table->boolean('is_returned')->default(false);
-            $table->timestamps();
-        });
-        Schema::create("retours_users", function (Blueprint $table) {
-            $table->id();
-            $table->integer('retours_id');
-            $table->integer('users_id');
-            $table->timestamps();
-        });
         Schema::create("user", function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("Psnummer")->unique();            
+            $table->string("Psnummer")->unique();
             $table->timestamps();
-
         });
+
         Schema::create('materiaals', function (Blueprint $table) {
             $table->id();
             $table->string('naam');
@@ -43,16 +26,42 @@ return new class extends Migration
             $table->integer('beschikbaarheid')->default(0);
             $table->timestamps();
         });
+
+        Schema::create('retours', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('item_type'); // materiaal or set
+            $table->unsignedBigInteger('materiaal_id')->nullable();
+            $table->unsignedBigInteger('materiaal_set_id')->nullable();
+
+            $table->string('item_naam');
+            $table->integer('aantal');
+            $table->dateTime('retour_datum');
+            $table->boolean('is_returned')->default(false);
+
+            $table->timestamps();
+
+            $table->foreign('materiaal_id')->references('id')->on('materiaals')->nullOnDelete();
+        });
+
+        Schema::create("retours_users", function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('retours_id');
+            $table->unsignedBigInteger('users_id');
+
+            $table->timestamps();
+
+            $table->foreign('retours_id')->references('id')->on('retours')->cascadeOnDelete();
+            $table->foreign('users_id')->references('id')->on('user')->cascadeOnDelete();
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('materiaals');
-        Schema::dropIfExists('user');
         Schema::dropIfExists('retours_users');
         Schema::dropIfExists('retours');
+        Schema::dropIfExists('materiaals');
+        Schema::dropIfExists('user');
     }
 };

@@ -18,8 +18,9 @@
         </select>
 
         <select id="sortFilter" onchange="filterLogboek()">
-            <option value="recent">Datum: recent eerst</option>
-            <option value="oud">Datum: oud eerst</option>
+            <option value="updated">Laatst gewijzigd</option>
+            <option value="recent">Inleverdatum: recent eerst</option>
+            <option value="oud">Inleverdatum: oud eerst</option>
             <option value="hoeveelheid-hoog">Hoeveelheid: hoog-laag</option>
             <option value="hoeveelheid-laag">Hoeveelheid: laag-hoog</option>
         </select>
@@ -48,6 +49,7 @@
                         data-ps="{{ strtolower($logboek->psnummer ?? '') }}"
                         data-terug="{{ $logboek->terug ? 'terug' : 'niet-terug' }}"
                         data-date="{{ $logboek->inleverdatum }}"
+                        data-updated="{{ $logboek->updated_at }}"
                         data-hoeveelheid="{{ $logboek->hoeveelheid }}"
                     >
                         <td>{{ $logboek->item_naam }}</td>
@@ -88,7 +90,7 @@
         </div>
     </div>
 
-</div>F
+</div>
 
 <script>
     let currentPage = 1;
@@ -115,13 +117,23 @@
             const ps = row.dataset.ps;
             const terug = row.dataset.terug;
 
-            const matchesSearch = searchValue === '' || name.includes(searchValue) || ps.includes(searchValue);
-            const matchesTerug = terugValue === 'all' || terug === terugValue;
+            const matchesSearch =
+                searchValue === '' ||
+                name.includes(searchValue) ||
+                ps.includes(searchValue);
+
+            const matchesTerug =
+                terugValue === 'all' ||
+                terug === terugValue;
 
             return matchesSearch && matchesTerug;
         });
 
         filteredRows.sort((a, b) => {
+            if (sortValue === 'updated') {
+                return new Date(b.dataset.updated) - new Date(a.dataset.updated);
+            }
+
             if (sortValue === 'recent') {
                 return new Date(b.dataset.date) - new Date(a.dataset.date);
             }
@@ -175,8 +187,14 @@
             const ps = row.dataset.ps;
             const terug = row.dataset.terug;
 
-            const matchesSearch = searchValue === '' || name.includes(searchValue) || ps.includes(searchValue);
-            const matchesTerug = terugValue === 'all' || terug === terugValue;
+            const matchesSearch =
+                searchValue === '' ||
+                name.includes(searchValue) ||
+                ps.includes(searchValue);
+
+            const matchesTerug =
+                terugValue === 'all' ||
+                terug === terugValue;
 
             return matchesSearch && matchesTerug;
         });

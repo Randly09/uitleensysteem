@@ -121,5 +121,35 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
+
+        $retours = [
+            [1, 'materiaal', 1, null, 'Camera', 1, '2026-06-10 10:00:00', false],
+            [1, 'materiaal', 3, null, 'Microfoon', 2, '2026-06-10 10:00:00', false],
+            [2, 'materiaal', 2, null, 'Tripod', 1, '2026-06-11 12:30:00', false],
+            [3, 'set', null, 1, 'Podcast set', 1, '2026-06-12 09:15:00', false],
+            [4, 'materiaal', 1, null, 'Camera', 3, '2026-06-13 14:00:00', false],
+            [5, 'set', null, 2, 'Interview set', 1, '2026-06-14 11:45:00', false],
+        ];
+
+        foreach ($retours as $retour) {
+            $retourId = DB::table('retours')->insertGetId([
+                'item_type' => $retour[1],
+                'materiaal_id' => $retour[2],
+                'materiaal_set_id' => $retour[3],
+                'item_naam' => $retour[4],
+                'aantal' => $retour[5],
+                'retour_datum' => $retour[6],
+                'is_returned' => $retour[7],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::table('retours_users')->insert([
+                'retours_id' => $retourId,
+                'users_id' => $retour[0],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }
