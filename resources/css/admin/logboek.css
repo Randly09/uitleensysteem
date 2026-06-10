@@ -1,0 +1,136 @@
+.logboek-page {
+    min-height: 100%;
+    padding: 25px 35px;
+    background: white;
+}
+
+.logboek-search-box {
+    background: white;
+    border: 2px solid #28106f;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    align-items: center;
+    width: 100%;
+}
+
+.logboek-search-box input {
+    flex: 1;
+    min-width: 0;
+    height: 54px;
+    background: #e5e5e5;
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    font-size: 16px;
+}
+
+.logboek-search-box select {
+    width: 220px;
+    flex-shrink: 0;
+    height: 54px;
+    background: #e5e5e5;
+    border: none;
+    border-radius: 8px;
+    padding: 0 18px;
+    font-size: 16px;
+}
+
+.logboek-search-box button {
+    width: 160px;
+    flex-shrink: 0;
+    height: 54px;
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logboek-list {
+    background: white;
+    border: 2px solid #28106f;
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 420px;
+    overflow-x: auto;
+}
+
+.logboek-list table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.logboek-list th,
+.logboek-list td {
+    border-bottom: 2px solid #28106f;
+    padding: 14px 10px;
+}
+
+.terug-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.terug-btn.is-terug {
+    background: #2d9c4a;
+}
+
+.terug-btn.niet-terug {
+    background: #c0392b;
+}
+
+@media (max-width: 1000px) {
+    .logboek-search-box {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .logboek-search-box select,
+    .logboek-search-box button {
+        width: 100%;
+    }
+}
+
+.logboek-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.logboek-pagination button {
+    width: 48px;
+    height: 42px;
+    background: #28106f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.logboek-pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.logboek-pagination span {
+    font-size: 17px;
+    font-weight: bold;
+    color: #28106f;
+}

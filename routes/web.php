@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\MateriaalController;
 use App\Http\Controllers\Admin\MateriaalSetController;
+use App\Http\Controllers\Admin\LogboekController;
+
 
 Route::redirect('/', '/admin');
 
@@ -11,9 +13,11 @@ Route::get('/admin', function () {
 })->name('admin.home');
 
 
-Route::get('/admin/logboek', function () {
-    return view('admin.logboek');
-})->name('admin.logboek');
+Route::get('/admin/logboek', [LogboekController::class, 'index'])
+    ->name('admin.logboek');
+
+Route::patch('/admin/logboek/{logboek}/terug', [LogboekController::class, 'toggleTerug'])
+    ->name('admin.logboek.terug');
 
 Route::get('/admin/retouren', function () {
     return view('admin.retouren');
