@@ -99,14 +99,11 @@
     background: white;
     border: 2px solid #28106f;
     border-radius: 12px;
-    padding: 14px;
     display: flex;
     gap: 14px;
     margin-bottom: 18px;
     align-items: center;
-    width: 100%;
 }
-
 .search-box input {
     flex: 1;
     min-width: 0;
@@ -115,6 +112,11 @@
     border: none;
     border-radius: 8px;
     padding: 0 18px;
+}
+
+.materialen-page .search-box {
+    height: auto;
+    min-height: 80px;
     font-size: 16px;
 }
 
