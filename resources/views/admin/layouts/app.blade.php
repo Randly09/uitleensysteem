@@ -27,8 +27,6 @@
         <main class="admin-content">
             @yield('content')
         </main>
-
-        <footer class="admin-footer"></footer>
     </div>
 </body>
 </html>

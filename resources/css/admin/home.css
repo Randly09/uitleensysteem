@@ -1,0 +1,72 @@
+.admin-home-page {
+    min-height: 100%;
+    padding: 25px 35px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-home-card {
+    width: 100%;
+    max-width: 850px;
+    background: white;
+    border: 2px solid #28106f;
+    border-radius: 12px;
+    padding: 45px;
+    text-align: center;
+}
+
+.admin-home-card h1 {
+    color: #28106f;
+    font-size: 34px;
+    margin: 0 0 22px;
+}
+
+.admin-home-card p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: black;
+    margin: 0 auto 18px;
+    max-width: 700px;
+}
+
+.go-user-btn {
+    display: inline-block;
+    margin-top: 25px;
+    background: #28106f;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 16px 34px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.go-user-btn:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .admin-home-page {
+        padding: 20px;
+        align-items: flex-start;
+    }
+
+    .admin-home-card {
+        padding: 30px 22px;
+    }
+
+    .admin-home-card h1 {
+        font-size: 26px;
+    }
+
+    .admin-home-card p {
+        font-size: 16px;
+    }
+
+    .go-user-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
