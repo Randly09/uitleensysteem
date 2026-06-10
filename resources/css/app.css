@@ -15,6 +15,7 @@
 @import './admin/materialen.css';
 @import './user/layout.css';
 @import './admin/logboek.css';
+@import './admin/home.css';
 
 * {
     box-sizing: border-box;
