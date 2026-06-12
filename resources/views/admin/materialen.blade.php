@@ -60,8 +60,9 @@
     </div>
 
     <div id="setForm" class="material-form-card">
-        <form action="{{ route('admin.sets.store') }}" method="POST">
+        <form id="setFormElement" action="{{ route('admin.sets.store') }}" method="POST">
             @csrf
+            <div id="setMethodField"></div>
 
             <div class="form-row">
                 <div>
@@ -74,6 +75,13 @@
                     <input type="number" name="hoeveelheid" value="1" min="1" required>
                 </div>
 
+                <div>
+                    <label>Lokaal</label>
+                    <input type="text" name="lokaal" placeholder="Bijv. S2.45">
+                </div>
+            </div>
+
+            <div class="form-row">
                 <div>
                     <label>Zoek materiaal</label>
                     <input type="text" id="setSearchInput" placeholder="Zoeken naar materiaal" onkeyup="filterSetMaterialen()">
@@ -90,8 +98,8 @@
                                 type="checkbox"
                                 name="materialen[{{ $loop->index }}][id]"
                                 value="{{ $materiaal->id }}"
+                                data-materiaal-id="{{ $materiaal->id }}"
                                 onchange="toggleSetAmount(this)"
-                                @if($materiaal->beschikbaarheid < 1) disabled @endif
                             >
 
                             <span>
@@ -106,7 +114,6 @@
                             name="materialen[{{ $loop->index }}][aantal]"
                             value="1"
                             min="1"
-                            max="{{ max(1, $materiaal->beschikbaarheid) }}"
                             disabled
                         >
                     </div>
@@ -140,6 +147,7 @@
                     <th>Naam</th>
                     <th>Hoeveelheid</th>
                     <th>Beschikbaarheid</th>
+                    <th>Lokaal</th>
                     <th>Conditie / Inhoud</th>
                     <th>Type</th>
                     <th>Acties</th>
@@ -156,11 +164,14 @@
                                 -
                             @endif
                         </td>
+
                         <td>{{ $materiaal->naam }}</td>
                         <td>{{ $materiaal->hoeveelheid }}</td>
                         <td>{{ $materiaal->beschikbaarheid }}</td>
-                        <td>{{ $materiaal->conditie }}</td>
+                        <td>{{ $materiaal->lokaal ?? '-' }}</td>
+                        <td>{{ $materiaal->conditie ?? '-' }}</td>
                         <td>Materiaal</td>
+
                         <td>
                             <button
                                 type="button"
@@ -179,11 +190,21 @@
                 @endforeach
 
                 @foreach($sets as $set)
+                    @php
+                        $setMaterialen = $set->materialen->map(function ($materiaal) {
+                            return [
+                                'id' => $materiaal->id,
+                                'aantal' => $materiaal->pivot->aantal,
+                            ];
+                        })->values();
+                    @endphp
+
                     <tr class="materiaal-row" data-type="set" data-name="{{ strtolower($set->naam) }}">
                         <td>-</td>
                         <td>{{ $set->naam }}</td>
                         <td>{{ $set->hoeveelheid }}</td>
                         <td>{{ $set->hoeveelheid }}</td>
+                        <td>{{ $set->lokaal ?? '-' }}</td>
                         <td>
                             @foreach($set->materialen as $materiaal)
                                 {{ $materiaal->naam }} x{{ $materiaal->pivot->aantal }}<br>
@@ -191,7 +212,18 @@
                         </td>
                         <td>Set</td>
                         <td>
-                            <button type="button">Bekijken</button>
+                            <button
+                                type="button"
+                                onclick="editSet(this)"
+                                data-id="{{ $set->id }}"
+                                data-naam="{{ $set->naam }}"
+                                data-hoeveelheid="{{ $set->hoeveelheid }}"
+                                data-lokaal="{{ $set->lokaal }}"
+                                data-omschrijving="{{ $set->omschrijving }}"
+                                data-materialen='@json($setMaterialen)'
+                            >
+                                Bekijken
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -207,14 +239,27 @@
     const fotoUploadLabel = document.getElementById('fotoUploadLabel');
 
     function showMaterialForm() {
-        document.getElementById('materialForm').classList.toggle('show');
-        document.getElementById('setForm').classList.remove('show');
+        const materialForm = document.getElementById('materialForm');
+        const setForm = document.getElementById('setForm');
+
+        const shouldShow = !materialForm.classList.contains('show');
+
+        setForm.classList.remove('show');
         resetMateriaalForm();
+
+        materialForm.classList.toggle('show', shouldShow);
     }
 
     function showSetForm() {
-        document.getElementById('setForm').classList.toggle('show');
-        document.getElementById('materialForm').classList.remove('show');
+        const setForm = document.getElementById('setForm');
+        const materialForm = document.getElementById('materialForm');
+
+        const shouldShow = !setForm.classList.contains('show');
+
+        materialForm.classList.remove('show');
+        resetSetForm();
+
+        setForm.classList.toggle('show', shouldShow);
     }
 
     function previewFoto(event) {
@@ -247,13 +292,54 @@
         form.action = `/admin/materialen/${button.dataset.id}`;
         methodField.innerHTML = '@method("PUT")';
 
-        form.querySelector('[name="naam"]').value = button.dataset.naam;
-        form.querySelector('[name="hoeveelheid"]').value = button.dataset.hoeveelheid;
-        form.querySelector('[name="lokaal"]').value = button.dataset.lokaal;
-        form.querySelector('[name="conditie"]').value = button.dataset.conditie;
-        form.querySelector('[name="opmerkingen"]').value = button.dataset.opmerkingen;
+        form.querySelector('[name="naam"]').value = button.dataset.naam || '';
+        form.querySelector('[name="hoeveelheid"]').value = button.dataset.hoeveelheid || '';
+        form.querySelector('[name="lokaal"]').value = button.dataset.lokaal || '';
+        form.querySelector('[name="conditie"]').value = button.dataset.conditie || '';
+        form.querySelector('[name="opmerkingen"]').value = button.dataset.opmerkingen || '';
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        scrollAdminContentTop();
+    }
+
+    function editSet(button) {
+        const setFormCard = document.getElementById('setForm');
+        const materialForm = document.getElementById('materialForm');
+        const form = document.getElementById('setFormElement');
+        const methodField = document.getElementById('setMethodField');
+
+        materialForm.classList.remove('show');
+        setFormCard.classList.add('show');
+
+        resetSetForm();
+
+        form.action = `/admin/sets/${button.dataset.id}`;
+        methodField.innerHTML = '@method("PUT")';
+
+        form.querySelector('[name="set_naam"]').value = button.dataset.naam || '';
+        form.querySelector('[name="hoeveelheid"]').value = button.dataset.hoeveelheid || '';
+        form.querySelector('[name="lokaal"]').value = button.dataset.lokaal || '';
+        form.querySelector('[name="omschrijving"]').value = button.dataset.omschrijving || '';
+
+        const materialen = JSON.parse(button.dataset.materialen || '[]');
+
+        materialen.forEach(function (materiaal) {
+            const checkbox = form.querySelector(`[data-materiaal-id="${materiaal.id}"]`);
+
+            if (!checkbox) {
+                return;
+            }
+
+            checkbox.checked = true;
+
+            const item = checkbox.closest('.set-material-item');
+            const amountInput = item.querySelector('.set-amount-input');
+
+            amountInput.disabled = false;
+            amountInput.required = true;
+            amountInput.value = materiaal.aantal || 1;
+        });
+
+        scrollAdminContentTop();
     }
 
     function resetMateriaalForm() {
@@ -264,6 +350,25 @@
         methodField.innerHTML = '';
         form.reset();
         removeFoto();
+    }
+
+    function resetSetForm() {
+        const form = document.getElementById('setFormElement');
+        const methodField = document.getElementById('setMethodField');
+
+        form.action = "{{ route('admin.sets.store') }}";
+        methodField.innerHTML = '';
+        form.reset();
+
+        document.querySelectorAll('.set-material-item input[type="checkbox"]').forEach(function (checkbox) {
+            checkbox.checked = false;
+        });
+
+        document.querySelectorAll('.set-amount-input').forEach(function (input) {
+            input.disabled = true;
+            input.required = false;
+            input.value = 1;
+        });
     }
 
     function toggleSetAmount(checkbox) {
@@ -306,6 +411,17 @@
 
             row.style.display = matchesSearch && matchesType ? '' : 'none';
         });
+    }
+
+    function scrollAdminContentTop() {
+        const adminContent = document.querySelector('.admin-content');
+
+        if (adminContent) {
+            adminContent.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
     }
 </script>
 @endsection

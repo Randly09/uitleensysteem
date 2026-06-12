@@ -1,203 +1,485 @@
 @extends('user.layouts.app')
 
 @section('content')
-    <div class="lenen-page">
+<div class="lenen-page">
 
-        {{-- MENU --}}
-        <div id="lenen-menu" class="lenen-card menu-card">
-
-            <button class="lenen-btn" data-type="lenen">
-                Lenen
-            </button>
-
-            <button class="lenen-btn" data-type="terugbrengen">
-                Terugbrengen
-            </button>
-
+    @if ($errors->any())
+        <div class="lenen-error-popup">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
         </div>
+    @endif
 
-        {{-- LENEN FORM --}}
-        <div id="lenen-form" class="lenen-card form-card hidden">
-
-            <label>Zoeken</label>
-
-            <div class="items-box">
-                <div>
-                    Camera
-                    <button type="button">+</button>
-                </div>
-
-                <div>
-                    Tripod
-                    <button type="button">+</button>
-                </div>
-
-                <div>
-                    Microfoon
-                    <button type="button">+</button>
-                </div>
-            </div>
-
-            <label>Datum & Tijd terugbrengen</label>
-
-            <div class="date-box">
-                <input type="datetime-local">
-            </div>
-
-            <button id="lenen-submit-btn" class="lenen-submit">
-                Lenen
-            </button>
-
-        </div>
-
-        {{-- TERUGBRENGEN FORM --}}
-        <div id="terugbrengen-form" class="lenen-card form-card hidden">
-
-            <label>Geleende materialen</label>
-
-            <div class="items-box">
-
-                <div>
-                    Camera
-                    <input type="checkbox">
-                </div>
-
-                <div>
-                    Tripod
-                    <input type="checkbox">
-                </div>
-
-                <div>
-                    Microfoon
-                    <input type="checkbox">
-                </div>
-
-            </div>
-
-            <button id="terugbrengen-submit-btn" class="lenen-submit">
-                Terugbrengen
-            </button>
-
-        </div>
-
-        {{-- LENEN BEVESTIGING --}}
-        <div id="lenen-bevestiging" class="lenen-card confirmation-card hidden">
-
-            <div class="confirmation-content">
-
-                <div class="success-icon">
-                    ✓
-                </div>
-
+    @if(session('success'))
+        <div id="successPopup" class="lenen-popup-overlay">
+            <div class="lenen-popup-card">
+                <div class="success-icon">✓</div>
                 <h2>Lening bevestigd</h2>
+                <p>{{ session('success') }}</p>
 
-                <p>
-                    Je aanvraag is succesvol verwerkt.
-                </p>
-
+                <button type="button" class="popup-main-btn" onclick="closeSuccessPopup()">
+                    Verder
+                </button>
             </div>
-
-            <button id="lenen-terug-overzicht" class="lenen-submit">
-                Terug 
-            </button>
-
         </div>
+    @endif
 
-        {{-- TERUGBRENGEN BEVESTIGING --}}
-        <div id="terugbrengen-bevestiging" class="lenen-card confirmation-card hidden">
+    <div id="lenen-menu" class="lenen-card menu-card">
+        <button class="lenen-btn" type="button" onclick="showBorrowScreen()">
+            Lenen
+        </button>
 
-            <div class="confirmation-content">
+        <button class="lenen-btn" type="button" onclick="showActiveLoansScreen()">
+            Mijn leningen
+        </button>
+    </div>
 
-                <div class="success-icon">
-                    ✓
-                </div>
+    <form id="borrowForm" action="{{ route('user.lenen.store') }}" method="POST" class="hidden">
+        @csrf
 
-                <h2>Materiaal teruggebracht</h2>
-
-                <p>
-                    Het materiaal is succesvol teruggebracht.
-                </p>
-
-            </div>
-
-            <button id="terugbrengen-terug-overzicht" class="lenen-submit">
+        <div id="borrowScreen" class="lenen-card form-card">
+            <button type="button" class="small-back-btn" onclick="showMenu()">
                 Terug
             </button>
 
+            <label>PS-nummer</label>
+            <input
+                class="lenen-input"
+                type="text"
+                name="psnummer"
+                placeholder="Bijv. PS000001"
+                value="{{ old('psnummer', $psnummer ?? session('active_psnummer')) }}"
+                required
+            >
+
+            <label>Zoeken</label>
+            <div class="lenen-search-box">
+                <input
+                    id="borrowSearchInput"
+                    type="text"
+                    placeholder="Zoeken"
+                    oninput="filterBorrowItems()"
+                >
+                <span>⌕</span>
+            </div>
+
+            <div class="items-box">
+                @foreach($materialen as $materiaal)
+                    <div class="borrow-item" data-search="{{ strtolower($materiaal->naam) }}">
+                        <div>
+                            <strong>{{ $materiaal->naam }}</strong>
+                            <small>Materiaal | Beschikbaar: {{ $materiaal->beschikbaarheid }}</small>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="add-item-btn"
+                            data-item-id="materiaal:{{ $materiaal->id }}"
+                            data-item-label="{{ $materiaal->naam }}"
+                            data-item-type="Materiaal"
+                            onclick="addBorrowItem(this)"
+                            @if($materiaal->beschikbaarheid < 1) disabled @endif
+                        >
+                            +
+                        </button>
+                    </div>
+                @endforeach
+
+                @foreach($sets as $set)
+                    <div class="borrow-item" data-search="{{ strtolower($set->naam) }}">
+                        <div>
+                            <strong>{{ $set->naam }}</strong>
+                            <small>Set | Beschikbaar: {{ $set->hoeveelheid }}</small>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="add-item-btn"
+                            data-item-id="set:{{ $set->id }}"
+                            data-item-label="{{ $set->naam }}"
+                            data-item-type="Set"
+                            onclick="addBorrowItem(this)"
+                            @if($set->hoeveelheid < 1) disabled @endif
+                        >
+                            +
+                        </button>
+                    </div>
+                @endforeach
+            </div>
+
+            <label>Geselecteerd</label>
+            <div id="selectedItemsList" class="selected-items-list">
+                <p class="empty-selected">Nog niets geselecteerd.</p>
+            </div>
+
+            <div id="hiddenItemsContainer"></div>
+
+            <label>Datum & tijd terugbrengen</label>
+
+            <div
+                id="returnDateTimeBox"
+                class="custom-datetime-box"
+                data-old-return="{{ old('return_datetime') }}"
+            >
+                <input
+                    id="returnDatePicker"
+                    class="custom-date-input"
+                    type="date"
+                    onchange="updateReturnDateTimeHidden()"
+                >
+
+                <select
+                    id="returnTimePicker"
+                    class="custom-time-select"
+                    onchange="updateReturnDateTimeHidden()"
+                >
+                    <option value="">Tijd</option>
+                </select>
+
+                <input
+                    id="returnDateInput"
+                    type="hidden"
+                    name="return_datetime"
+                    value="{{ old('return_datetime') }}"
+                >
+            </div>
+
+            <button type="button" class="lenen-submit" onclick="openConfirmPopup()">
+                Lenen
+            </button>
+        </div>
+    </form>
+
+    <div id="activeLoansScreen" class="lenen-card active-loans-card hidden">
+        <button type="button" class="small-back-btn" onclick="showMenu()">
+            Terug
+        </button>
+
+        <h2>Materialen geleend</h2>
+
+        <form class="active-ps-form" method="GET" action="{{ route('user.lenen') }}">
+            <input
+                type="text"
+                name="psnummer"
+                placeholder="PS-nummer"
+                value="{{ $psnummer ?? '' }}"
+            >
+
+            <button type="submit">Zoeken</button>
+        </form>
+
+        <div class="active-loans-list">
+@forelse($actieveLeningen as $lening)
+    @php
+        if ($lening->item_type === 'materiaal') {
+            $naam = $lening->materiaal?->naam ?? $lening->item_naam;
+            $locatie = $lening->materiaal?->lokaal ?? '-';
+        } else {
+            $naam = $lening->set?->naam ?? $lening->item_naam;
+            $locatie = $lening->set?->lokaal ?? '-';
+        }
+    @endphp
+
+    <div class="active-loan-item">
+        <div>
+            <strong>{{ $naam }}</strong>
+            <small>{{ ucfirst($lening->item_type) }}</small>
         </div>
 
+        <div>
+            <span>Terugbrengen op</span>
+            <strong>{{ \Carbon\Carbon::parse($lening->retour_datum)->format('d-m-Y H:i') }}</strong>
+        </div>
+
+        <div>
+            <span>Lokaal</span>
+            <strong>{{ $locatie }}</strong>
+        </div>
+    </div>
+@empty
+    <p class="no-active-loans">
+        Geen actieve leningen gevonden.
+    </p>
+@endforelse
+        </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    <div id="confirmPopup" class="lenen-popup-overlay hidden">
+        <div class="lenen-popup-card">
+            <h2>Lening bevestigen</h2>
 
-            const menu = document.getElementById('lenen-menu');
+            <p>
+                Weet je zeker dat je deze producten wilt lenen?
+            </p>
 
-            const lenenForm = document.getElementById('lenen-form');
-            const terugbrengenForm = document.getElementById('terugbrengen-form');
+            <div class="confirm-summary">
+                <strong>Producten:</strong>
+                <ul id="confirmItemsList"></ul>
 
-            const lenenBevestiging = document.getElementById('lenen-bevestiging');
-            const terugbrengenBevestiging = document.getElementById('terugbrengen-bevestiging');
+                <strong>Terugbrengen op:</strong>
+                <p id="confirmDateText"></p>
+            </div>
 
-            const lenenSubmitBtn = document.getElementById('lenen-submit-btn');
-            const terugbrengenSubmitBtn = document.getElementById('terugbrengen-submit-btn');
+            <div class="popup-actions">
+                <button type="button" class="popup-secondary-btn" onclick="closeConfirmPopup()">
+                    Nee
+                </button>
 
-            const lenenTerugBtn = document.getElementById('lenen-terug-overzicht');
-            const terugbrengenTerugBtn = document.getElementById('terugbrengen-terug-overzicht');
+                <button type="button" class="popup-main-btn" onclick="submitBorrowForm()">
+                    Ja, lenen
+                </button>
+            </div>
+        </div>
+    </div>
 
-            function resetScreens() {
-                lenenForm.classList.add('hidden');
-                terugbrengenForm.classList.add('hidden');
-                lenenBevestiging.classList.add('hidden');
-                terugbrengenBevestiging.classList.add('hidden');
-            }
+</div>
 
-            document.querySelectorAll('.lenen-btn').forEach(button => {
+<script>
+    const selectedItems = new Map();
 
-                button.addEventListener('click', () => {
+    document.addEventListener('DOMContentLoaded', function () {
+        buildTimeOptions();
+        restoreOldReturnDateTime();
+    });
 
-                    resetScreens();
+    function buildTimeOptions() {
+        const timePicker = document.getElementById('returnTimePicker');
 
-                    menu.classList.add('hidden');
+        if (!timePicker) {
+            return;
+        }
 
-                    if (button.dataset.type === 'lenen') {
-                        lenenForm.classList.remove('hidden');
-                    } else {
-                        terugbrengenForm.classList.remove('hidden');
-                    }
+        for (let hour = 0; hour < 24; hour++) {
+            ['00', '30'].forEach(function (minutes) {
+                const hourText = String(hour).padStart(2, '0');
+                const timeValue = `${hourText}:${minutes}`;
 
-                });
+                const option = document.createElement('option');
+                option.value = timeValue;
+                option.textContent = timeValue;
 
+                timePicker.appendChild(option);
             });
+        }
+    }
 
-            lenenSubmitBtn.addEventListener('click', () => {
+    function restoreOldReturnDateTime() {
+        const dateTimeBox = document.getElementById('returnDateTimeBox');
+        const datePicker = document.getElementById('returnDatePicker');
+        const timePicker = document.getElementById('returnTimePicker');
 
-                lenenForm.classList.add('hidden');
-                lenenBevestiging.classList.remove('hidden');
+        if (!dateTimeBox || !datePicker || !timePicker) {
+            return;
+        }
 
-            });
+        const oldValue = dateTimeBox.dataset.oldReturn;
 
-            terugbrengenSubmitBtn.addEventListener('click', () => {
+        if (!oldValue) {
+            return;
+        }
 
-                terugbrengenForm.classList.add('hidden');
-                terugbrengenBevestiging.classList.remove('hidden');
+        const normalizedValue = oldValue.replace(' ', 'T');
+        const parts = normalizedValue.split('T');
 
-            });
+        if (parts.length < 2) {
+            return;
+        }
 
-            lenenTerugBtn.addEventListener('click', () => {
+        const datePart = parts[0];
+        const timePart = parts[1].substring(0, 5);
 
-                resetScreens();
-                menu.classList.remove('hidden');
+        datePicker.value = datePart;
+        timePicker.value = timePart;
 
-            });
+        updateReturnDateTimeHidden();
+    }
 
-            terugbrengenTerugBtn.addEventListener('click', () => {
+    function updateReturnDateTimeHidden() {
+        const datePicker = document.getElementById('returnDatePicker');
+        const timePicker = document.getElementById('returnTimePicker');
+        const hiddenInput = document.getElementById('returnDateInput');
 
-                resetScreens();
-                menu.classList.remove('hidden');
+        if (!datePicker || !timePicker || !hiddenInput) {
+            return;
+        }
 
-            });
+        if (datePicker.value && timePicker.value) {
+            hiddenInput.value = `${datePicker.value}T${timePicker.value}`;
+        } else {
+            hiddenInput.value = '';
+        }
+    }
 
+    function hideAllScreens() {
+        document.getElementById('lenen-menu').classList.add('hidden');
+        document.getElementById('borrowForm').classList.add('hidden');
+        document.getElementById('activeLoansScreen').classList.add('hidden');
+    }
+
+    function showMenu() {
+        hideAllScreens();
+        document.getElementById('lenen-menu').classList.remove('hidden');
+    }
+
+    function showBorrowScreen() {
+        hideAllScreens();
+        document.getElementById('borrowForm').classList.remove('hidden');
+    }
+
+    function showActiveLoansScreen() {
+        hideAllScreens();
+        document.getElementById('activeLoansScreen').classList.remove('hidden');
+    }
+
+    function filterBorrowItems() {
+        const searchValue = document.getElementById('borrowSearchInput').value.toLowerCase().trim();
+        const items = document.querySelectorAll('.borrow-item');
+
+        items.forEach(function (item) {
+            const searchText = item.dataset.search || '';
+            item.style.display = searchText.includes(searchValue) ? '' : 'none';
         });
-    </script>
+    }
+
+    function addBorrowItem(button) {
+        const id = button.dataset.itemId;
+        const label = button.dataset.itemLabel;
+        const type = button.dataset.itemType;
+
+        if (selectedItems.has(id)) {
+            return;
+        }
+
+        selectedItems.set(id, {
+            label: label,
+            type: type,
+        });
+
+        button.disabled = true;
+
+        renderSelectedItems();
+    }
+
+    function removeBorrowItem(id) {
+        selectedItems.delete(id);
+
+        const button = document.querySelector(`[data-item-id="${id}"]`);
+
+        if (button) {
+            button.disabled = false;
+        }
+
+        renderSelectedItems();
+    }
+
+    function renderSelectedItems() {
+        const selectedItemsList = document.getElementById('selectedItemsList');
+        const hiddenItemsContainer = document.getElementById('hiddenItemsContainer');
+
+        selectedItemsList.innerHTML = '';
+        hiddenItemsContainer.innerHTML = '';
+
+        if (selectedItems.size === 0) {
+            selectedItemsList.innerHTML = '<p class="empty-selected">Nog niets geselecteerd.</p>';
+            return;
+        }
+
+        selectedItems.forEach(function (item, id) {
+            selectedItemsList.insertAdjacentHTML('beforeend', `
+                <div class="selected-item">
+                    <span>
+                        <strong>${escapeHtml(item.label)}</strong>
+                        <small>${escapeHtml(item.type)}</small>
+                    </span>
+
+                    <button type="button" onclick="removeBorrowItem('${id}')">×</button>
+                </div>
+            `);
+
+            hiddenItemsContainer.insertAdjacentHTML('beforeend', `
+                <input type="hidden" name="items[]" value="${id}">
+            `);
+        });
+    }
+
+    function openConfirmPopup() {
+        updateReturnDateTimeHidden();
+
+        const psInput = document.querySelector('[name="psnummer"]');
+        const dateInput = document.getElementById('returnDateInput');
+
+        if (!psInput.value.trim()) {
+            alert('Vul je PS-nummer in.');
+            return;
+        }
+
+        if (selectedItems.size === 0) {
+            alert('Selecteer minimaal één materiaal of set.');
+            return;
+        }
+
+        if (!dateInput.value) {
+            alert('Kies een datum en tijd om terug te brengen.');
+            return;
+        }
+
+        const selectedDate = new Date(dateInput.value);
+
+        if (selectedDate <= new Date()) {
+            alert('Kies een datum en tijd in de toekomst.');
+            return;
+        }
+
+        const confirmItemsList = document.getElementById('confirmItemsList');
+        const confirmDateText = document.getElementById('confirmDateText');
+
+        confirmItemsList.innerHTML = '';
+
+        selectedItems.forEach(function (item) {
+            confirmItemsList.insertAdjacentHTML('beforeend', `
+                <li>${escapeHtml(item.label)} (${escapeHtml(item.type)})</li>
+            `);
+        });
+
+        confirmDateText.textContent = selectedDate.toLocaleString('nl-NL', {
+            dateStyle: 'short',
+            timeStyle: 'short',
+        });
+
+        document.getElementById('confirmPopup').classList.remove('hidden');
+    }
+
+    function closeConfirmPopup() {
+        document.getElementById('confirmPopup').classList.add('hidden');
+    }
+
+    function submitBorrowForm() {
+        updateReturnDateTimeHidden();
+        document.getElementById('borrowForm').submit();
+    }
+
+    function closeSuccessPopup() {
+        const popup = document.getElementById('successPopup');
+
+        if (popup) {
+            popup.classList.add('hidden');
+        }
+
+        showActiveLoansScreen();
+    }
+
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = value;
+        return div.innerHTML;
+    }
+
+    @if(session('success'))
+        document.addEventListener('DOMContentLoaded', function () {
+            hideAllScreens();
+            document.getElementById('activeLoansScreen').classList.remove('hidden');
+        });
+    @endif
+</script>
 @endsection

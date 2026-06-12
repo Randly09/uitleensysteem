@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class MateriaalSet extends Model
 {
-protected $fillable = [
-    'naam',
-    'hoeveelheid',
-    'omschrijving',
-];
+    protected $fillable = [
+        'naam',
+        'hoeveelheid',
+        'lokaal',
+        'omschrijving',
+    ];
+
     public function materialen()
     {
         return $this->belongsToMany(Materiaal::class, 'materiaal_materiaal_set')

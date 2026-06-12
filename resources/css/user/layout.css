@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body.user-body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
@@ -15,11 +19,12 @@ body.user-body {
 
 .user-header {
     height: 75px;
+    flex-shrink: 0;
     background: #f7f7f7;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 22px;
 }
 
 .user-logo {
@@ -35,11 +40,13 @@ body.user-body {
 .user-content {
     flex: 1;
     background: white;
-    padding: 20px;
+    padding: 5px;
+    overflow-y: auto;
 }
 
 .user-footer {
     height: 70px;
+    flex-shrink: 0;
     background: #28106f;
     display: flex;
     align-items: center;
@@ -65,12 +72,13 @@ body.user-body {
     background: rgba(255, 255, 255, 0.25);
 }
 
-@media (max-width: 430px) {
-    .user-phone {
-        width: 100vw;
-        min-height: 100vh;
-    }
+.hidden {
+    display: none !important;
 }
+
+/* =========================
+   USER HOME PAGE
+========================= */
 
 .user-home-page {
     min-height: 100%;
@@ -103,18 +111,538 @@ body.user-body {
 }
 
 .go-admin-btn {
-    display: block;
     width: 100%;
+    min-height: 46px;
     margin-top: 24px;
     background: #28106f;
     color: white;
     text-decoration: none;
     border-radius: 8px;
-    padding: 15px 18px;
     font-size: 17px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .go-admin-btn:hover {
     text-decoration: underline;
+}
+
+/* =========================
+   USER LENEN PAGE GENERAL
+========================= */
+
+.lenen-page {
+    min-height: 100%;
+    width: 100%;
+    background: white;
+    display: block;
+    padding: 14px 0 24px;
+}
+
+#borrowForm {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.lenen-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    background: #28106f;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.35);
+    padding: 16px 12px;
+}
+
+/* =========================
+   USER LENEN MENU
+========================= */
+
+.menu-card {
+    min-height: 225px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 28px;
+}
+
+.lenen-btn,
+.lenen-submit,
+.popup-main-btn,
+.popup-secondary-btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 15px;
+    border: none;
+    border-radius: 7px;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
+}
+
+.lenen-btn,
+.lenen-submit,
+.popup-main-btn {
+    background: white;
+    color: black;
+}
+
+.popup-secondary-btn {
+    background: #e5e5e5;
+    color: black;
+}
+
+.small-back-btn {
+    min-height: 40px;
+    background: white;
+    color: #28106f;
+    border: none;
+    border-radius: 6px;
+    padding: 0 18px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* =========================
+   USER LENEN FORM
+========================= */
+
+.form-card label,
+.active-loans-card label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 13px 0 7px;
+}
+
+.lenen-input,
+.lenen-search-box,
+.date-box {
+    width: 100%;
+    background: white;
+    color: black;
+    border-radius: 9px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+}
+
+.lenen-input {
+    border: none;
+    outline: none;
+    font-size: 15px;
+    padding: 0 12px;
+}
+
+.lenen-search-box input,
+.date-box input {
+    flex: 1;
+    height: 44px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    min-width: 0;
+}
+
+.lenen-search-box span,
+.date-box span {
+    color: black;
+    font-size: 17px;
+    margin-left: 8px;
+}
+
+/* =========================
+   ITEMS LIST
+========================= */
+
+.items-box {
+    width: 100%;
+    background: white;
+    color: black;
+    height: 190px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 12px;
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.borrow-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 34px;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #777;
+    padding: 10px 0;
+}
+
+.borrow-item:last-child {
+    border-bottom: none;
+}
+
+.borrow-item > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.borrow-item strong {
+    display: block;
+    width: 100%;
+    font-size: 15px;
+    line-height: 1.25;
+    word-break: normal;
+    overflow-wrap: break-word;
+    margin-bottom: 3px;
+}
+
+.borrow-item small {
+    display: block;
+    width: 100%;
+    font-size: 11px;
+    color: #555;
+    line-height: 1.3;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.add-item-btn {
+    background: #35a853;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-item-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* =========================
+   SELECTED ITEMS
+========================= */
+
+.selected-items-list {
+    background: white;
+    color: black;
+    min-height: 58px;
+    max-height: 125px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.empty-selected {
+    margin: 8px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.selected-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 24px;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #ddd;
+    padding: 8px 0;
+}
+
+.selected-item:last-child {
+    border-bottom: none;
+}
+
+.selected-item span {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.selected-item strong {
+    display: block;
+    font-size: 13px;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.selected-item small {
+    display: block;
+    color: #555;
+    font-size: 10px;
+}
+
+.selected-item button {
+    background: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.lenen-submit {
+    margin-top: 24px;
+}
+
+input[type="datetime-local"] {
+    color: black;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+/* =========================
+   POPUPS
+========================= */
+
+.lenen-popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.lenen-popup-card {
+    width: 300px;
+    background: white;
+    color: black;
+    border: 12px solid #28106f;
+    border-radius: 8px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 7px 7px 6px rgba(0, 0, 0, 0.35);
+}
+
+.lenen-popup-card h2 {
+    color: #28106f;
+    margin: 0 0 12px;
+}
+
+.confirm-summary {
+    background: #eeeeee;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: left;
+    margin: 16px 0;
+}
+
+.confirm-summary ul {
+    margin: 8px 0 14px;
+    padding-left: 18px;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.success-icon {
+    width: 60px;
+    height: 60px;
+    background: #35a853;
+    color: white;
+    border-radius: 50%;
+    font-size: 38px;
+    line-height: 60px;
+    margin: 0 auto 14px;
+}
+
+/* =========================
+   ERROR POPUP
+========================= */
+
+.lenen-error-popup {
+    position: fixed;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background: #ffe5e5;
+    color: #9b1c1c;
+    border: 2px solid #c0392b;
+    border-radius: 8px;
+    padding: 12px;
+    z-index: 60;
+    font-size: 13px;
+}
+
+.lenen-error-popup p {
+    margin: 4px 0;
+}
+
+/* =========================
+   ACTIVE LOANS SCREEN
+========================= */
+
+.active-loans-card {
+    min-height: 430px;
+}
+
+.active-loans-card h2 {
+    margin: 0 0 12px;
+    font-size: 21px;
+    font-weight: normal;
+    border-bottom: 2px solid white;
+    padding-bottom: 8px;
+}
+
+.active-ps-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.active-ps-form input {
+    flex: 1;
+    border: none;
+    border-radius: 6px;
+    padding: 9px;
+    min-width: 0;
+}
+
+.active-ps-form button {
+    background: white;
+    color: #28106f;
+    border: none;
+    border-radius: 6px;
+    padding: 0 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active-loans-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.active-loan-item {
+    background: white;
+    color: black;
+    border-radius: 7px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 0.8fr;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.active-loan-item span,
+.active-loan-item small {
+    display: block;
+    color: #555;
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+
+.active-loan-item strong {
+    display: block;
+    font-size: 12px;
+}
+
+.no-active-loans {
+    background: white;
+    color: black;
+    border-radius: 7px;
+    padding: 15px;
+    font-size: 14px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 430px) {
+    .user-phone {
+        width: 100vw;
+        min-height: 100vh;
+    }
+
+    .user-content {
+        padding: 5px;
+    }
+
+    .lenen-page {
+        padding: 14px 0 24px;
+    }
+
+    .lenen-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 16px 12px;
+    }
+}
+
+.custom-datetime-box {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 110px;
+    gap: 10px;
+}
+
+.custom-date-input,
+.custom-time-select {
+    width: 100%;
+    min-height: 44px;
+    background: white;
+    color: black;
+    border: none;
+    outline: none;
+    border-radius: 9px;
+    padding: 0 12px;
+    font-size: 15px;
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, 0.35);
+}
+
+.custom-time-select {
+    cursor: pointer;
+}
+
+@media (max-width: 430px) {
+    .custom-datetime-box {
+        grid-template-columns: 1fr 105px;
+        gap: 8px;
+    }
 }
