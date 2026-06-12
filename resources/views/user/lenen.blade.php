@@ -1,7 +1,11 @@
 @extends('user.layouts.app')
 
 @section('content')
-<div class="lenen-page">
+<div
+    class="lenen-page"
+    id="lenenPage"
+    data-open-active="{{ session('success') || request()->has('psnummer') ? 'true' : 'false' }}"
+>
 
     @if ($errors->any())
         <div class="lenen-error-popup">
@@ -170,38 +174,38 @@
         </form>
 
         <div class="active-loans-list">
-@forelse($actieveLeningen as $lening)
-    @php
-        if ($lening->item_type === 'materiaal') {
-            $naam = $lening->materiaal?->naam ?? $lening->item_naam;
-            $locatie = $lening->materiaal?->lokaal ?? '-';
-        } else {
-            $naam = $lening->set?->naam ?? $lening->item_naam;
-            $locatie = $lening->set?->lokaal ?? '-';
-        }
-    @endphp
+            @forelse($actieveLeningen as $lening)
+                @php
+                    if ($lening->item_type === 'materiaal') {
+                        $naam = $lening->materiaal?->naam ?? $lening->item_naam;
+                        $locatie = $lening->materiaal?->lokaal ?? '-';
+                    } else {
+                        $naam = $lening->set?->naam ?? $lening->item_naam;
+                        $locatie = $lening->set?->lokaal ?? '-';
+                    }
+                @endphp
 
-    <div class="active-loan-item">
-        <div>
-            <strong>{{ $naam }}</strong>
-            <small>{{ ucfirst($lening->item_type) }}</small>
-        </div>
+                <div class="active-loan-item">
+                    <div>
+                        <strong>{{ $naam }}</strong>
+                        <small>{{ ucfirst($lening->item_type) }}</small>
+                    </div>
 
-        <div>
-            <span>Terugbrengen op</span>
-            <strong>{{ \Carbon\Carbon::parse($lening->retour_datum)->format('d-m-Y H:i') }}</strong>
-        </div>
+                    <div>
+                        <span>Terugbrengen op</span>
+                        <strong>{{ \Carbon\Carbon::parse($lening->retour_datum)->format('d-m-Y H:i') }}</strong>
+                    </div>
 
-        <div>
-            <span>Lokaal</span>
-            <strong>{{ $locatie }}</strong>
-        </div>
-    </div>
-@empty
-    <p class="no-active-loans">
-        Geen actieve leningen gevonden.
-    </p>
-@endforelse
+                    <div>
+                        <span>Lokaal</span>
+                        <strong>{{ $locatie }}</strong>
+                    </div>
+                </div>
+            @empty
+                <p class="no-active-loans">
+                    Geen actieve leningen gevonden.
+                </p>
+            @endforelse
         </div>
     </div>
 
@@ -241,7 +245,20 @@
     document.addEventListener('DOMContentLoaded', function () {
         buildTimeOptions();
         restoreOldReturnDateTime();
+        openCorrectStartScreen();
     });
+
+    function openCorrectStartScreen() {
+        const page = document.getElementById('lenenPage');
+
+        if (!page) {
+            return;
+        }
+
+        if (page.dataset.openActive === 'true') {
+            showActiveLoansScreen();
+        }
+    }
 
     function buildTimeOptions() {
         const timePicker = document.getElementById('returnTimePicker');
@@ -250,10 +267,14 @@
             return;
         }
 
+        if (timePicker.options.length > 1) {
+            return;
+        }
+
         for (let hour = 0; hour < 24; hour++) {
             ['00', '30'].forEach(function (minutes) {
                 const hourText = String(hour).padStart(2, '0');
-                const timeValue = `${hourText}:${minutes}`;
+                const timeValue = hourText + ':' + minutes;
 
                 const option = document.createElement('option');
                 option.value = timeValue;
@@ -305,7 +326,7 @@
         }
 
         if (datePicker.value && timePicker.value) {
-            hiddenInput.value = `${datePicker.value}T${timePicker.value}`;
+            hiddenInput.value = datePicker.value + 'T' + timePicker.value;
         } else {
             hiddenInput.value = '';
         }
@@ -333,7 +354,13 @@
     }
 
     function filterBorrowItems() {
-        const searchValue = document.getElementById('borrowSearchInput').value.toLowerCase().trim();
+        const searchInput = document.getElementById('borrowSearchInput');
+
+        if (!searchInput) {
+            return;
+        }
+
+        const searchValue = searchInput.value.toLowerCase().trim();
         const items = document.querySelectorAll('.borrow-item');
 
         items.forEach(function (item) {
@@ -364,7 +391,7 @@
     function removeBorrowItem(id) {
         selectedItems.delete(id);
 
-        const button = document.querySelector(`[data-item-id="${id}"]`);
+        const button = document.querySelector('[data-item-id="' + id + '"]');
 
         if (button) {
             button.disabled = false;
@@ -377,6 +404,10 @@
         const selectedItemsList = document.getElementById('selectedItemsList');
         const hiddenItemsContainer = document.getElementById('hiddenItemsContainer');
 
+        if (!selectedItemsList || !hiddenItemsContainer) {
+            return;
+        }
+
         selectedItemsList.innerHTML = '';
         hiddenItemsContainer.innerHTML = '';
 
@@ -386,20 +417,38 @@
         }
 
         selectedItems.forEach(function (item, id) {
-            selectedItemsList.insertAdjacentHTML('beforeend', `
-                <div class="selected-item">
-                    <span>
-                        <strong>${escapeHtml(item.label)}</strong>
-                        <small>${escapeHtml(item.type)}</small>
-                    </span>
+            const selectedItem = document.createElement('div');
+            selectedItem.className = 'selected-item';
 
-                    <button type="button" onclick="removeBorrowItem('${id}')">×</button>
-                </div>
-            `);
+            const textWrapper = document.createElement('span');
 
-            hiddenItemsContainer.insertAdjacentHTML('beforeend', `
-                <input type="hidden" name="items[]" value="${id}">
-            `);
+            const title = document.createElement('strong');
+            title.textContent = item.label;
+
+            const subtitle = document.createElement('small');
+            subtitle.textContent = item.type;
+
+            textWrapper.appendChild(title);
+            textWrapper.appendChild(subtitle);
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.textContent = '×';
+            removeButton.addEventListener('click', function () {
+                removeBorrowItem(id);
+            });
+
+            selectedItem.appendChild(textWrapper);
+            selectedItem.appendChild(removeButton);
+
+            selectedItemsList.appendChild(selectedItem);
+
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'items[]';
+            hiddenInput.value = id;
+
+            hiddenItemsContainer.appendChild(hiddenInput);
         });
     }
 
@@ -437,9 +486,9 @@
         confirmItemsList.innerHTML = '';
 
         selectedItems.forEach(function (item) {
-            confirmItemsList.insertAdjacentHTML('beforeend', `
-                <li>${escapeHtml(item.label)} (${escapeHtml(item.type)})</li>
-            `);
+            const listItem = document.createElement('li');
+            listItem.textContent = item.label + ' (' + item.type + ')';
+            confirmItemsList.appendChild(listItem);
         });
 
         confirmDateText.textContent = selectedDate.toLocaleString('nl-NL', {
@@ -468,18 +517,5 @@
 
         showActiveLoansScreen();
     }
-
-    function escapeHtml(value) {
-        const div = document.createElement('div');
-        div.textContent = value;
-        return div.innerHTML;
-    }
-
-    @if(session('success'))
-        document.addEventListener('DOMContentLoaded', function () {
-            hideAllScreens();
-            document.getElementById('activeLoansScreen').classList.remove('hidden');
-        });
-    @endif
 </script>
 @endsection
