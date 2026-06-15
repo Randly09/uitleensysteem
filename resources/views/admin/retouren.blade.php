@@ -20,7 +20,7 @@
         </form>
 
         <div id="retourSkeleton">
-            <x-table-skeleton :rows="5" />
+            <x-table-skeleton :rows="5" :columns="5"  />
         </div>
 
         <div id="retourContent" class="retour-list">

@@ -28,7 +28,11 @@
         <button type="submit">Zoeken</button>
     </form>
 
-    <div class="logboek-list">
+        <div id="logboekSkeleton">
+            <x-table-skeleton :rows="5" :columns="5"  />
+        </div>
+
+    <div class="logboek-list" id="logboekContent">
         <table id="logboekTable">
             <thead>
                 <tr>
@@ -69,11 +73,11 @@
                         </td>
 
                         <td>
-                            <form action="{{ route('admin.logboek.terug', $logboek->id) }}" method="POST">
+                            <form action="{{ route('admin.logboek.terug', $logboek->id) }}" method="POST" class="flex justify-center">
                                 @csrf
                                 @method('PATCH')
 
-                                <button class="terug-btn {{ $logboek->terug ? 'is-terug' : 'niet-terug' }}" type="submit">
+                                <button class="terug-btn {{ $logboek->terug ? 'is-terug' : 'niet-terug' }}" type="submit" disabled>
                                     {{ $logboek->terug ? '✓' : '✕' }}
                                 </button>
                             </form>
@@ -95,6 +99,26 @@
 <script>
     let currentPage = 1;
     const rowsPerPage = 10;
+
+    const logboekItemsElement = document.getElementById('logboekItemsData');
+    const logboekItems = JSON.parse(logboekItemsElement ? logboekItemsElement.value : '[]');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const skeleton = document.getElementById('logboekSkeleton');
+        const content = document.getElementById('logboekContent');
+
+        if (!skeleton || !content) {
+            return;
+        }
+
+        content.style.display = 'none';
+        skeleton.style.display = 'block';
+
+        setTimeout(function () {
+            skeleton.style.display = 'none';
+            content.style.display = 'block';
+        }, 600);
+    });
 
     function filterLogboek(event = null, resetPage = true) {
         if (event) {

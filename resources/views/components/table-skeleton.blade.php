@@ -1,16 +1,15 @@
 @props([
     'rows' => 3,
+    "columns" => 5,
 ])
 
 <div class="table-skeleton">
     <table>
         <thead>
             <tr>
-                <th><div class="skeleton skeleton-header"></div></th>
-                <th><div class="skeleton skeleton-header"></div></th>
-                <th><div class="skeleton skeleton-header"></div></th>
-                <th><div class="skeleton skeleton-header"></div></th>
-                <th><div class="skeleton skeleton-header"></div></th>
+                @for ($i = 0; $i < $columns; $i++)
+                    <th><div class="skeleton skeleton-header"></div></th>
+                @endfor   
             </tr>
         </thead>
 

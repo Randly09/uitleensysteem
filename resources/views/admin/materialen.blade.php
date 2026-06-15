@@ -139,7 +139,7 @@
         <button type="submit">Zoeken</button>
     </form>
 
-    <div class="materialen-list">
+    <div class="materialen-list" id="materialContent">
         <table>
             <thead>
                 <tr>
@@ -230,6 +230,10 @@
             </tbody>
         </table>
     </div>
+    
+   <div id="materialSkeleton">
+        <x-table-skeleton :rows="5" :columns="5"  />
+    </div>
 </div>
 
 <script>
@@ -237,6 +241,26 @@
     const fotoPreviewBox = document.getElementById('fotoPreviewBox');
     const fotoPreview = document.getElementById('fotoPreview');
     const fotoUploadLabel = document.getElementById('fotoUploadLabel');
+    
+    const materialItemsElement = document.getElementById('materialItemsData');
+    const materialItems = JSON.parse(materialItemsElement ? materialItemsElement.value : '[]');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const skeleton = document.getElementById('materialSkeleton');
+        const content = document.getElementById('materialContent');
+
+        if (!skeleton || !content) {
+            return;
+        }
+
+        content.style.display = 'none';
+        skeleton.style.display = 'block';
+
+        setTimeout(function () {
+            skeleton.style.display = 'none';
+            content.style.display = 'block';
+        }, 600);
+    });
 
     function showMaterialForm() {
         const materialForm = document.getElementById('materialForm');
